@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -36,10 +36,10 @@ model Reservation {
 
 model User {
   id           String      @id @default(uuid())
+  name         String
   email        String      @unique
   passwordHash String      @map("password_hash")
   createdAt    DateTime    @default(now()) @map("created_at")
-  role         String
   restaurantId String?
   restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
 }
