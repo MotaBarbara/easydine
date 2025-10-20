@@ -7,7 +7,6 @@ CREATE TABLE "Restaurant" (
     "primaryColor" TEXT,
     "settings" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
     CONSTRAINT "Restaurant_pkey" PRIMARY KEY ("id")
 );
 
