@@ -7,6 +7,7 @@ CREATE TABLE "Restaurant" (
     "primaryColor" TEXT,
     "settings" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "Restaurant_pkey" PRIMARY KEY ("id")
 );
 
@@ -28,10 +29,10 @@ CREATE TABLE "Reservation" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "role" TEXT NOT NULL,
     "restaurantId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
