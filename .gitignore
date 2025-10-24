@@ -1,6 +1,7 @@
 # dependencies
 node_modules/
 generated/
+coverage/
 
 # builds
 build/
