@@ -16,7 +16,7 @@ Include context, motivation, or reference to the related issue/task if applicabl
 
 ---
 
-### 🧪 How Has This Been Tested?
+### How Has This Been Tested?
 
 <!-- Describe the tests that you ran to verify your changes.
 Provide instructions so others can reproduce. -->
@@ -29,7 +29,7 @@ Provide instructions so others can reproduce. -->
 
 ---
 
-### ✅ Checklist
+### Checklist
 
 <!-- Confirm that your changes meet these requirements -->
 
