@@ -1,8 +1,19 @@
+### Create user
 POST http://localhost:3333/users
 Content-Type: application/json
 
 {
-  "name": "",
-  "email": "johnd@gmail.com",
-  "password": ""
+  "name": "Ze",
+  "email": "ze@gmail.com",
+  "password": "123456"
 }
+
+### Authenticate
+POST http://localhost:3333/sessions
+Content-Type: application/json
+
+{
+  "email": "ze@gmail.com",
+  "password": "123456"
+}
+
