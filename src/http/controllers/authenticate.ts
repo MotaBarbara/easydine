@@ -1,7 +1,3 @@
-// import { InMemoryUsersRepository } from "@/repositories/in-memory-users-repository";
-import { PrismaUsersRepository } from "@/repositories/prisma-users-repository";
-import { UserAlreadyExistsError } from "@/use-cases/errors/user-already-exists-error";
-import { AuthenticateUseCase } from "@/use-cases/authenticate";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { InvalidCredentialsError } from "@/use-cases/errors/invalid-credentials-error";
