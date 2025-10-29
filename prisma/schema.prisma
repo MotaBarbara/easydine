@@ -5,12 +5,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model Restaurant {
   id           String        @id @default(uuid())
-  key          String        @unique
   name         String
   logo         String?
   primaryColor String?

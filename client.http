@@ -3,8 +3,8 @@ POST http://localhost:3333/users
 Content-Type: application/json
 
 {
-  "name": "Ze",
-  "email": "ze@gmail.com",
+  "name": "Joao",
+  "email": "joao@gmail.com",
   "password": "123456"
 }
 
@@ -17,3 +17,14 @@ Content-Type: application/json
   "password": "123456"
 }
 
+### Create Restaurant
+POST http://localhost:3333/restaurants
+Content-Type: application/json
+x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
+
+{
+  "name": "Restaurant 3",
+  "logo": null,
+  "primaryColor": "#C0392B",
+  "settings": {}
+}
