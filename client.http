@@ -28,3 +28,16 @@ x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
   "primaryColor": "#C0392B",
   "settings": {}
 }
+
+### Create Reservation
+POST http://localhost:3333/reservations
+Content-Type: application/json
+
+{
+  "restaurantId": "9d96e1e1-557a-4091-bc91-1f1b09e258da",
+  "date": "2025-11-10T18:00:00.000Z",
+  "time": "18:00",
+  "customerName": "John Doe",
+  "customerEmail": "john@example.com",
+  "groupSize": 4
+  }
