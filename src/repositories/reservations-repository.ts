@@ -5,6 +5,14 @@ export interface ReservationsRepository {
     restaurantId: string,
     date: Date,
     time: string,
-  ): Promise<Reservation | null>;
+  ): Promise<Reservation[]>;
+
+  sumGroupSizePerSlot(
+    restaurantId: string,
+    date: Date,
+    from: string,
+    to: string,
+  ): Promise<number>;
+
   create(data: Prisma.ReservationCreateInput): Promise<Reservation>;
 }

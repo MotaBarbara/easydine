@@ -2,14 +2,17 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryReservationsRepository } from "@/repositories/in-memory/in-memory-reservations-repository";
 import { CreateReservationUseCase } from "./create-reservation";
 import { ReservationConflictError } from "./errors/reservation-conflict-error";
+import { InMemoryRestaurantsRepository } from "@/repositories/in-memory/in-memory-restaurants-repository";
 
 let reservationsRepo: InMemoryReservationsRepository;
+let restaurantsRepo: InMemoryRestaurantsRepository;
 let sut: CreateReservationUseCase;
 
 describe("Create Reservation Use Case", () => {
   beforeEach(() => {
     reservationsRepo = new InMemoryReservationsRepository();
-    sut = new CreateReservationUseCase(reservationsRepo);
+    restaurantsRepo = new InMemoryRestaurantsRepository();
+    sut = new CreateReservationUseCase(reservationsRepo, restaurantsRepo);
   });
 
   it("Creates reservation", async () => {

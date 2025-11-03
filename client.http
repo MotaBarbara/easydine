@@ -23,10 +23,15 @@ Content-Type: application/json
 x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
 
 {
-  "name": "Restaurant 3",
+  "name": "Restaurant Andre",
   "logo": null,
   "primaryColor": "#C0392B",
-  "settings": {}
+  "settings": {
+    "slots": [
+      { "from": "18:00", "to": "20:00", "maxReservations": 10 },
+      { "from": "20:00", "to": "22:00", "maxReservations": 20 }
+    ]
+  }
 }
 
 ### Create Reservation
@@ -34,10 +39,10 @@ POST http://localhost:3333/reservations
 Content-Type: application/json
 
 {
-  "restaurantId": "9d96e1e1-557a-4091-bc91-1f1b09e258da",
+  "restaurantId": "0908ac7e-d1b3-4085-955a-b9b79c041ab7",
   "date": "2025-11-10T18:00:00.000Z",
-  "time": "18:00",
-  "customerName": "John Doe",
+  "time": "21:59",
+  "customerName": "Testing",
   "customerEmail": "john@example.com",
-  "groupSize": 4
+  "groupSize": 5
   }

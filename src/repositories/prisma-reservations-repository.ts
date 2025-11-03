@@ -8,9 +8,26 @@ export class PrismaReservationsRepository implements ReservationsRepository {
     date: Date,
     time: string,
   ) {
-    return prisma.reservation.findFirst({
+    return prisma.reservation.findMany({
       where: { restaurantId, date, time },
     });
+  }
+
+  async sumGroupSizePerSlot(
+    restaurantId: string,
+    date: Date,
+    from: string,
+    to: string,
+  ) {
+    const total = await prisma.reservation.aggregate({
+      _sum: { groupSize: true },
+      where: {
+        restaurantId,
+        date,
+        time: { gte: from, lt: to },
+      },
+    });
+    return total._sum.groupSize ?? 0;
   }
 
   async create(data: Prisma.ReservationCreateInput) {
