@@ -11,13 +11,30 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
     time: string,
   ) {
     return (
-      this.items.find(
+      this.items.filter(
         r =>
           r.restaurantId === restaurantId &&
           r.date.getTime() === date.getTime() &&
           r.time === time,
       ) ?? null
     );
+  }
+
+  async sumGroupSizePerSlot(
+    restaurantId: string,
+    date: Date,
+    from: string,
+    to: string,
+  ) {
+    return this.items
+      .filter(
+        r =>
+          r.restaurantId === restaurantId &&
+          r.date.getTime() === date.getTime() &&
+          r.time >= from &&
+          r.time < to,
+      )
+      .reduce((acc, r) => acc + r.groupSize, 0);
   }
 
   async create(data: Prisma.ReservationCreateInput) {
