@@ -1,23 +1,38 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryReservationsRepository } from "@/repositories/in-memory/in-memory-reservations-repository";
+import { InMemoryRestaurantsRepository } from "@/repositories/in-memory/in-memory-restaurants-repository";
 import { CreateReservationUseCase } from "./create-reservation";
 import { ReservationConflictError } from "./errors/reservation-conflict-error";
-import { InMemoryRestaurantsRepository } from "@/repositories/in-memory/in-memory-restaurants-repository";
 
 let reservationsRepo: InMemoryReservationsRepository;
 let restaurantsRepo: InMemoryRestaurantsRepository;
 let sut: CreateReservationUseCase;
+let restaurantId: string;
 
 describe("Create Reservation Use Case", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     reservationsRepo = new InMemoryReservationsRepository();
     restaurantsRepo = new InMemoryRestaurantsRepository();
     sut = new CreateReservationUseCase(reservationsRepo, restaurantsRepo);
+
+    const restaurant = await restaurantsRepo.create({
+      name: "Restaurant Zé",
+      logo: null,
+      primaryColor: null,
+      settings: {
+        slots: [
+          { from: "18:00", to: "20:00", maxReservations: 10 },
+          { from: "20:00", to: "22:00", maxReservations: 10 },
+        ],
+      },
+    } as any);
+
+    restaurantId = restaurant.id;
   });
 
-  it("Creates reservation", async () => {
+  it("creates a reservation", async () => {
     const { reservation } = await sut.execute({
-      restaurantId: "r1",
+      restaurantId,
       date: new Date("2025-11-10T18:00:00Z"),
       time: "18:00",
       customerName: "Jane Doe",
@@ -28,24 +43,24 @@ describe("Create Reservation Use Case", () => {
     expect(reservation.id).toEqual(expect.any(String));
   });
 
-  it("Prevents double booking", async () => {
+  it("prevents overbooking", async () => {
     await sut.execute({
-      restaurantId: "r1",
+      restaurantId,
       date: new Date("2025-11-10T18:00:00Z"),
       time: "18:00",
       customerName: "John",
       customerEmail: "john@example.com",
-      groupSize: 4,
+      groupSize: 8,
     });
 
     await expect(() =>
       sut.execute({
-        restaurantId: "r1",
+        restaurantId,
         date: new Date("2025-11-10T18:00:00Z"),
         time: "18:00",
         customerName: "Alice",
         customerEmail: "alice@example.com",
-        groupSize: 2,
+        groupSize: 5,
       }),
     ).rejects.toBeInstanceOf(ReservationConflictError);
   });

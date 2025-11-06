@@ -53,4 +53,20 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
     this.items.push(reservation);
     return reservation;
   }
+
+  async findById(id: string) {
+    return this.items.find(r => r.id === id) ?? null;
+  }
+
+  async updateStatus(
+    id: string,
+    status: "confirmed" | "cancelled",
+  ): Promise<Reservation> {
+    const index = this.items.findIndex(r => r.id === id);
+    if (index === -1) throw new Error("Reservation not found");
+
+    const updated: Reservation = { ...this.items[index]!, status };
+    this.items[index] = updated;
+    return updated;
+  }
 }

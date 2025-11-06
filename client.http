@@ -23,7 +23,7 @@ Content-Type: application/json
 x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
 
 {
-  "name": "Restaurant Andre",
+  "name": "Restaurant Fabio",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
@@ -39,10 +39,14 @@ POST http://localhost:3333/reservations
 Content-Type: application/json
 
 {
-  "restaurantId": "0908ac7e-d1b3-4085-955a-b9b79c041ab7",
+  "restaurantId": "d6d5cac7-e249-441e-8ca3-c5f560ffde70",
   "date": "2025-11-10T18:00:00.000Z",
-  "time": "21:59",
-  "customerName": "Testing",
-  "customerEmail": "john@example.com",
-  "groupSize": 5
+  "time": "20:22",
+  "customerName": "Luis",
+  "customerEmail": "luis@example.com",
+  "groupSize": 2
   }
+
+
+### Cancel Reservation
+PATCH http://localhost:3333/reservations/2f1e1d13-d3f9-4b0e-b43e-12135a049bdc/cancel

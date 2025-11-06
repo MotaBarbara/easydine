@@ -21,16 +21,14 @@ describe("Create Restaurant Use Case", () => {
     expect(restaurant.name).toBe("Test Restaurant");
   });
 
-  it("prevents duplicate id", async () => {
-    const restaurantId = "rest-456";
-
+  it("prevents duplicate name", async () => {
     await sut.execute({
-      name: "First Restaurant",
+      name: "Test Restaurant",
     });
 
     await expect(() =>
       sut.execute({
-        name: "Second Restaurant",
+        name: "Test Restaurant",
       }),
     ).rejects.toBeInstanceOf(RestaurantAlreadyExistsError);
   });

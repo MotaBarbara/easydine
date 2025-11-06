@@ -9,6 +9,10 @@ export class InMemoryRestaurantsRepository implements RestaurantsRepository {
     return this.items.find(r => r.id === id) ?? null;
   }
 
+  async findByName(name: string) {
+    return this.items.find(r => r.name === name) ?? null;
+  }
+
   async create(data: Prisma.RestaurantCreateInput) {
     const restaurant: Restaurant = {
       id: crypto.randomUUID(),

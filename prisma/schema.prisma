@@ -29,7 +29,6 @@ model Reservation {
   groupSize     Int
   status        String
   createdAt     DateTime @default(now()) @map("created_at")
-
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])
 }
 
