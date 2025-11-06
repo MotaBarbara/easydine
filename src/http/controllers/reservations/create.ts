@@ -36,7 +36,7 @@ export async function createReservation(
       customerName,
       customerEmail,
       groupSize,
-      status: status ?? "pending",
+      status: status ?? "confirmed",
     });
 
     return reply.status(201).send({ reservation });

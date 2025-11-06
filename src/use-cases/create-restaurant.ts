@@ -1,3 +1,4 @@
+// src/use-cases/create-restaurant.ts
 import type { RestaurantsRepository } from "@/repositories/restaurants-repository";
 import { Prisma, type Restaurant } from "generated/prisma";
 import { RestaurantAlreadyExistsError } from "./errors/restaurant-already-exists-error";
@@ -22,6 +23,11 @@ export class CreateRestaurantUseCase {
     primaryColor = null,
     settings = null,
   }: CreateRestaurantUseCaseRequest): Promise<CreateRestaurantUseCaseResponse> {
+    const existing = await this.restaurantsRepository.findByName(name);
+    if (existing) {
+      throw new RestaurantAlreadyExistsError();
+    }
+
     const restaurant = await this.restaurantsRepository.create({
       name,
       logo: logo ?? null,

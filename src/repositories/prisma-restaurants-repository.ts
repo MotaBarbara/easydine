@@ -7,6 +7,10 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
     return prisma.restaurant.findUnique({ where: { id } });
   }
 
+  async findByName(name: string) {
+    return prisma.restaurant.findFirst({ where: { name } });
+  }
+
   async create(data: Prisma.RestaurantCreateInput) {
     return prisma.restaurant.create({ data });
   }

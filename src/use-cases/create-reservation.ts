@@ -63,7 +63,7 @@ export class CreateReservationUseCase {
       customerName,
       customerEmail,
       groupSize,
-      status: status ?? "pending",
+      status: status ?? "confirmed",
       restaurant: { connect: { id: restaurantId } },
     });
 

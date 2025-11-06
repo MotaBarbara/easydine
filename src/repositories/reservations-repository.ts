@@ -15,4 +15,11 @@ export interface ReservationsRepository {
   ): Promise<number>;
 
   create(data: Prisma.ReservationCreateInput): Promise<Reservation>;
+
+  findById(id: string): Promise<Reservation | null>;
+
+  updateStatus(
+    id: string,
+    status: "confirmed" | "cancelled",
+  ): Promise<Reservation>;
 }
