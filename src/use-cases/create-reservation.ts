@@ -2,6 +2,11 @@ import type { ReservationsRepository } from "@/repositories/reservations-reposit
 import { ReservationConflictError } from "./errors/reservation-conflict-error";
 import type { Reservation } from "generated/prisma";
 import type { RestaurantsRepository } from "@/repositories/restaurants-repository";
+import type { RestaurantSettings } from "@/types/restaurant-settings";
+import { isPastDay, isClosedAt } from "@/utils/reservation-time";
+import { ReservationPastDate } from "./errors/reservation-past-date-error";
+import { RestaurantClosed } from "./errors/restaurant-closed-error";
+import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
 
 interface CreateReservationUseCaseRequest {
   restaurantId: string;
@@ -33,14 +38,21 @@ export class CreateReservationUseCase {
     status,
   }: CreateReservationUseCaseRequest): Promise<CreateReservationUseCaseResponse> {
     const restaurant = await this.restaurantsRepository.findById(restaurantId);
-    if (!restaurant) throw new Error("Restaurant not found");
+    if (!restaurant) {
+      throw new RestaurantNotFound();
+    }
 
-    const settings = (restaurant.settings as any) || {};
-    const slots: {
-      from: string;
-      to: string;
-      maxReservations: number;
-    }[] = settings.slots || [];
+    const settings = (restaurant.settings as any as RestaurantSettings) ?? {};
+
+    if (isPastDay(date)) {
+      throw new ReservationPastDate();
+    }
+
+    if (isClosedAt(settings, date, time)) {
+      throw new RestaurantClosed();
+    }
+
+    const slots = settings.slots ?? [];
 
     const currentSlot = slots.find(s => time >= s.from && time < s.to);
 
