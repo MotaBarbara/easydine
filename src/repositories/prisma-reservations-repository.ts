@@ -38,13 +38,38 @@ export class PrismaReservationsRepository implements ReservationsRepository {
     return prisma.reservation.findUnique({ where: { id } });
   }
 
-  async updateStatus(
-    id: string,
-    status: "confirmed" | "cancelled",
-  ) {
+  async updateStatus(id: string, status: "confirmed" | "cancelled") {
     return prisma.reservation.update({
       where: { id },
       data: { status },
+    });
+  }
+
+  async listByRestaurantAndDate(restaurantId: string, date?: Date) {
+    if (!date) {
+      return prisma.reservation.findMany({
+        where: {
+          restaurantId,
+          date: { gte: new Date() },
+        },
+        orderBy: { date: "asc" },
+      });
+    }
+
+    const start = new Date(date);
+    start.setUTCHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 1);
+
+    return prisma.reservation.findMany({
+      where: {
+        restaurantId,
+        date: {
+          gte: start,
+          lt: end,
+        },
+      },
+      orderBy: { date: "asc" },
     });
   }
 }
