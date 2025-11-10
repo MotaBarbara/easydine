@@ -22,4 +22,9 @@ export interface ReservationsRepository {
     id: string,
     status: "confirmed" | "cancelled",
   ): Promise<Reservation>;
+
+  listByRestaurantAndDate(
+    restaurantId: string,
+    date?: Date,
+  ): Promise<Reservation[]>;
 }

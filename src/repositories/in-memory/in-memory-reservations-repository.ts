@@ -69,4 +69,22 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
     this.items[index] = updated;
     return updated;
   }
+
+  async listByRestaurantAndDate(restaurantId: string, date?: Date) {
+    return this.items
+      .filter(r => r.restaurantId === restaurantId)
+      .filter(r => {
+        if (!date) return true;
+
+        // const d = new Date(r.date);
+        const d = r.date instanceof Date ? r.date : new Date(r.date);
+        const target = new Date(date);
+        return (
+          d.getUTCFullYear() === target.getUTCFullYear() &&
+          d.getUTCMonth() === target.getUTCMonth() &&
+          d.getUTCDate() === target.getUTCDate()
+        );
+      })
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
 }

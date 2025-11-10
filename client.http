@@ -43,14 +43,22 @@ POST http://localhost:3333/reservations
 Content-Type: application/json
 
 {
-  "restaurantId": "c53a67a4-2979-410c-a57d-2b5042e52b69",
-  "date": "2025-11-10T18:00:00.000Z",
+  "restaurantId": "b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e",
+  "date": "2025-11-11T18:00:00.000Z",
   "time": "19:22",
   "customerName": "Luis",
   "customerEmail": "luis@example.com",
-  "groupSize": 2
+  "groupSize": 5
   }
 
 
 ### Cancel Reservation
 PATCH http://localhost:3333/reservations/2f1e1d13-d3f9-4b0e-b43e-12135a049bdc/cancel
+
+### List upcoming reservations
+GET http://localhost:3333/restaurants/b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e/reservations
+Accept: application/json
+
+### List reservations for a specific date
+GET http://localhost:3333/restaurants/b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e/reservations?date=2025-11-11
+Accept: application/json
