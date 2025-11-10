@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryReservationsRepository } from "@/repositories/in-memory/in-memory-reservations-repository";
 import { CancelReservationUseCase } from "./cancel-reservation";
+import { ReservationAlreadyCancelledError } from "./errors/reservation-already-cancelled-error";
+import { ReservationNotFoundError } from "./errors/reservation-not-found-error";
 
 let reservationsRepo: InMemoryReservationsRepository;
 let sut: CancelReservationUseCase;
@@ -28,7 +30,7 @@ describe("Cancel Reservation Use Case", () => {
 
   it("throws when reservation not found", async () => {
     await expect(() => sut.execute("missing")).rejects.toThrowError(
-      "Reservation not found",
+      ReservationNotFoundError,
     );
   });
 
@@ -44,7 +46,7 @@ describe("Cancel Reservation Use Case", () => {
     } as any);
 
     await expect(() => sut.execute(res.id)).rejects.toThrowError(
-      "Reservation already cancelled",
+      ReservationAlreadyCancelledError,
     );
   });
 });

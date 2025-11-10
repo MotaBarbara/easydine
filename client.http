@@ -23,12 +23,16 @@ Content-Type: application/json
 x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
 
 {
-  "name": "Restaurant Fabio",
+  "name": "Restaurant do Manel",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
+    "closedWeekly": [{ "weekday": 1, "from": "12:00", "to": "15:00" }],
+    "closedDates": [{ "date": "2025-12-25", "from": "18:00", "to": "23:59" }],
     "slots": [
-      { "from": "18:00", "to": "20:00", "maxReservations": 10 },
+      { "from": "12:00", "to": "12:00", "maxReservations": 20 },
+      { "from": "13:00", "to": "14:00", "maxReservations": 20 },
+      { "from": "18:00", "to": "20:00", "maxReservations": 20 },
       { "from": "20:00", "to": "22:00", "maxReservations": 20 }
     ]
   }
@@ -39,9 +43,9 @@ POST http://localhost:3333/reservations
 Content-Type: application/json
 
 {
-  "restaurantId": "d6d5cac7-e249-441e-8ca3-c5f560ffde70",
+  "restaurantId": "c53a67a4-2979-410c-a57d-2b5042e52b69",
   "date": "2025-11-10T18:00:00.000Z",
-  "time": "20:22",
+  "time": "19:22",
   "customerName": "Luis",
   "customerEmail": "luis@example.com",
   "groupSize": 2
