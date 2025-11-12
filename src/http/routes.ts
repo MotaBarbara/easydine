@@ -5,12 +5,22 @@ import { createRestaurant } from "./controllers/restaurants/create";
 import { createReservation } from "./controllers/reservations/create";
 import { cancelReservation } from "./controllers/reservations/cancel";
 import { listReservations } from "./controllers/list-reservations";
+import { verifyJWT } from "./middlewares/verify-jwt";
+import { ensureOwner } from "./middlewares/ensure-owner";
 
-export async function authRoutes(app: FastifyInstance) {
+export async function appRoutes(app: FastifyInstance) {
   app.post("/users", register);
   app.post("/sessions", authenticate);
-  app.post("/restaurants", createRestaurant);
+  app.post("/restaurants", { preHandler: [verifyJWT] }, createRestaurant);
+  app.get(
+    "/restaurants/:restaurantId/reservations",
+    { preHandler: [verifyJWT, ensureOwner] },
+    listReservations,
+  );
   app.post("/reservations", createReservation);
-  app.patch("/reservations/:id/cancel", cancelReservation);
-  app.get("/restaurants/:restaurantId/reservations", listReservations);
+  app.patch(
+    "/reservations/:reservationId/cancel",
+    { preHandler: [verifyJWT] },
+    cancelReservation,
+  );
 }

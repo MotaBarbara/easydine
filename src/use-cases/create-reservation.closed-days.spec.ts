@@ -39,7 +39,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2025-11-10T18:00:00Z"),
+        date: new Date("2099-11-09T18:00:00Z"),
         time: "18:00",
         customerName: "Alice",
         customerEmail: "alice@test.com",
@@ -63,7 +63,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2025-11-10T12:30:00Z"),
+        date: new Date("2099-11-09T12:30:00Z"),
         time: "12:30",
         customerName: "Luis",
         customerEmail: "luis@test.com",
@@ -73,7 +73,7 @@ describe("Create Reservation Use Case", () => {
 
     const ok = await sut.execute({
       restaurantId: r.id,
-      date: new Date("2025-11-10T19:00:00Z"),
+      date: new Date("2099-11-09T19:00:00Z"),
       time: "19:00",
       customerName: "Antonio",
       customerEmail: "antonio@test.com",
@@ -86,7 +86,7 @@ describe("Create Reservation Use Case", () => {
     const r = await restaurantsRepo.create({
       name: "R",
       settings: {
-        closedDates: [{ date: "2025-12-25", from: "18:00", to: "23:59" }],
+        closedDates: [{ date: "2099-12-25", from: "18:00", to: "23:59" }],
         slots: [
           { from: "12:00", to: "15:00", maxReservations: 10 },
           { from: "18:00", to: "22:00", maxReservations: 10 },
@@ -97,7 +97,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2025-12-25T19:00:00Z"),
+        date: new Date("2099-12-25T19:00:00Z"),
         time: "19:00",
         customerName: "A",
         customerEmail: "a@x.com",
@@ -107,7 +107,7 @@ describe("Create Reservation Use Case", () => {
 
     const ok = await sut.execute({
       restaurantId: r.id,
-      date: new Date("2025-12-25T12:30:00Z"),
+      date: new Date("2099-12-25T12:30:00Z"),
       time: "12:30",
       customerName: "B",
       customerEmail: "b@x.com",

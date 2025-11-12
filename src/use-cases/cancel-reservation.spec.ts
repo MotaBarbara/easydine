@@ -16,7 +16,7 @@ describe("Cancel Reservation Use Case", () => {
   it("cancels an existing reservation", async () => {
     const res = await reservationsRepo.create({
       restaurant: { connect: { id: "r1" } },
-      date: new Date("2025-11-10T18:00:00Z"),
+      date: new Date("2099-11-10T18:00:00Z"),
       time: "18:00",
       customerName: "Jane Doe",
       customerEmail: "jane@example.com",
@@ -37,7 +37,7 @@ describe("Cancel Reservation Use Case", () => {
   it("prevents double cancellation", async () => {
     const res = await reservationsRepo.create({
       restaurant: { connect: { id: "r1" } },
-      date: new Date("2025-11-10T18:00:00Z"),
+      date: new Date("2099-11-10T18:00:00Z"),
       time: "18:00",
       customerName: "John Doe",
       customerEmail: "john@example.com",

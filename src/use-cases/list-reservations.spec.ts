@@ -15,7 +15,7 @@ describe("ListReservationsUseCase", () => {
       {
         id: "res-joao-10-nov-1",
         restaurantId: "rest-1",
-        date: new Date("2025-11-10T18:00:00.000Z"),
+        date: new Date("2099-11-10T18:00:00.000Z"),
         time: "18:00",
         customerName: "Alice",
         customerEmail: "alice@example.com",
@@ -26,7 +26,7 @@ describe("ListReservationsUseCase", () => {
       {
         id: "res-joao-10-nov-2",
         restaurantId: "rest-1",
-        date: new Date("2025-11-10T20:00:00.000Z"),
+        date: new Date("2099-11-10T20:00:00.000Z"),
         time: "20:00",
         customerName: "Bob",
         customerEmail: "bob@example.com",
@@ -51,7 +51,7 @@ describe("ListReservationsUseCase", () => {
     reservationsRepo.items.push({
       id: "res-ze-10-nov-1",
       restaurantId: "rest-2",
-      date: new Date("2025-11-10T18:00:00.000Z"),
+      date: new Date("2099-11-10T18:00:00.000Z"),
       time: "18:00",
       customerName: "Dave",
       customerEmail: "dave@example.com",
@@ -64,7 +64,7 @@ describe("ListReservationsUseCase", () => {
   it("lists reservations for a restaurant and date", async () => {
     const { reservations } = await sut.execute({
       restaurantId: "rest-1",
-      date: new Date("2025-11-10T00:00:00.000Z"),
+      date: new Date("2099-11-10T00:00:00.000Z"),
     });
 
     expect(reservations).toHaveLength(2);
