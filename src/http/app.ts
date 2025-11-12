@@ -1,11 +1,13 @@
 import fastify from "fastify";
-import { authRoutes } from "./routes";
+import { appRoutes } from "./routes";
 import { env } from "process";
 import z, { ZodError } from "zod";
+import jwtPlugin from "@/http/plugins/jwt";
 
 export const app = fastify();
 
-app.register(authRoutes);
+app.register(jwtPlugin);
+app.register(appRoutes);
 app.setErrorHandler((error, request, reply) => {
   if (error instanceof ZodError) {
     return reply.status(400).send({

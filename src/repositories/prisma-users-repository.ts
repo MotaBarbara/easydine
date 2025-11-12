@@ -25,4 +25,10 @@ export class PrismaUsersRepository implements UsersRepository {
     const user = await prisma.user.create({ data });
     return user;
   }
+  async setRestaurantId(userId: string, restaurantId: string) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { restaurantId },
+    });
+  }
 }

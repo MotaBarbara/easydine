@@ -1,29 +1,35 @@
+@baseUrl = http://localhost:3333
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMTIxOTQ1ZS01NTFiLTQ3YWEtOGRjOC00MDFiY2M2MTA1NzUiLCJyZXN0YXVyYW50SWQiOiJiNDYwMTljMC03NDczLTQxYTYtOTU3ZS1kYjgyZDEwNDI0ZGIiLCJlbWFpbCI6Im1vdGFAZ21haWwuY29tIiwibmFtZSI6Ik1vdGEiLCJpYXQiOjE3NjI5NzgxNTF9.C4pH9k6-CbzLuN_fo3frTeIXqOOUpeyJLcSfknB9O1w
+@restaurantId = b46019c0-7473-41a6-957e-db82d10424db
+@otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
+@reservationId = 20c2d9e7-6587-4299-9083-ff07d660c904
+
 ### Create user
-POST http://localhost:3333/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "Joao",
-  "email": "joao@gmail.com",
+  "name": "Mota",
+  "email": "mota@gmail.com",
   "password": "123456"
 }
 
 ### Authenticate
-POST http://localhost:3333/sessions
+POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "ze@gmail.com",
+  "email": "mota@gmail.com",
   "password": "123456"
 }
 
 ### Create Restaurant
-POST http://localhost:3333/restaurants
+POST {{baseUrl}}/restaurants
 Content-Type: application/json
-x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
+Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant do Manel",
+  "name": "Restaurant da Sabores",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
@@ -38,27 +44,50 @@ x-user-id: 39b1a102-760a-47aa-a0db-6b9bace42e46
   }
 }
 
-### Create Reservation
-POST http://localhost:3333/reservations
+### Re-authenticate after creating restaurant
+POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "restaurantId": "b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e",
-  "date": "2025-11-11T18:00:00.000Z",
+  "email": "mota@gmail.com",
+  "password": "123456"
+}
+
+### Create Reservation
+POST {{baseUrl}}/reservations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "restaurantId": "{{restaurantId}}",
+  "date": "2025-11-20T18:00:00.000Z",
   "time": "19:22",
-  "customerName": "Luis",
-  "customerEmail": "luis@example.com",
+  "customerName": "Julio",
+  "customerEmail": "julio@example.com",
   "groupSize": 5
   }
 
 
 ### Cancel Reservation
-PATCH http://localhost:3333/reservations/2f1e1d13-d3f9-4b0e-b43e-12135a049bdc/cancel
-
-### List upcoming reservations
-GET http://localhost:3333/restaurants/b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e/reservations
-Accept: application/json
+PATCH {{baseUrl}}/reservations/{{reservationId}}/cancel
+Authorization: Bearer {{token}}
 
 ### List reservations for a specific date
-GET http://localhost:3333/restaurants/b4f59b11-a6cb-41dd-a3ff-39cb2cafd49e/reservations?date=2025-11-11
+GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations?date=2025-11-19
 Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### Should be 401 without token
+GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations
+Accept: application/json
+
+### Should be 403 with token for a DIFFERENT restaurantId
+GET {{baseUrl}}/restaurants/{{otherRestaurantId}}/reservations
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List upcoming reservations: Should work with correct owner token + restaurantId
+GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations
+Accept: application/json
+Authorization: Bearer {{token}}

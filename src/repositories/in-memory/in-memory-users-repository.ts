@@ -38,4 +38,9 @@ export class InMemoryUsersRepository implements UsersRepository {
     this.items.push(user);
     return user;
   }
+
+  async setRestaurantId(userId: string, restaurantId: string): Promise<void> {
+    const u = this.items.find(u => u.id === userId);
+    if (u) u.restaurantId = restaurantId;
+  }
 }

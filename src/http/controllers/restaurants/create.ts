@@ -14,24 +14,24 @@ export async function createRestaurant(
     // ask help how to validate
     settings: z.record(z.any(), z.any()).optional().nullable(),
   });
+  
 
   const { name, logo, primaryColor, settings } = bodySchema.parse(
     request.body,
   );
 
-  const userId =
+  const ownerId =
     // @ts-expect-error auth typing depends on your plugin
-    request.user?.sub ??
-    (request.headers["x-user-id"] as string | undefined);
+    request.user?.sub ?? (request.headers["x-user-id"] as string | undefined);
 
-  if (!userId) {
+  if (!ownerId) {
     return reply.status(401).send({ message: "Unauthorized" });
   }
 
   try {
     const useCase = makeCreateRestaurantUseCase();
     const { restaurant } = await useCase.execute({
-      userId,
+      ownerId,
       name,
       logo: logo ?? null,
       primaryColor: primaryColor ?? null,
