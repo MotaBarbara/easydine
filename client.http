@@ -91,3 +91,30 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations
 Accept: application/json
 Authorization: Bearer {{token}}
+
+
+### Update restaurant
+PUT {{baseUrl}}/restaurants/{{restaurantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Restaurant do Updated",
+  "primaryColor": "#C0392B",
+  "settings": {
+    "slots": [
+      { "from": "12:00", "to": "13:30", "maxReservations": 20 },
+      { "from": "18:00", "to": "20:00", "maxReservations": 24 },
+      { "from": "20:00", "to": "22:00", "maxReservations": 24 }
+    ],
+    "closedWeekly": [{ "weekday": 1, "from": "12:00", "to": "15:00" }],
+    "closedDates": [{ "date": "2025-12-25", "from": "18:00", "to": "23:59" }]
+  }
+}
+
+### Clear logo only
+PUT {{baseUrl}}/restaurants/{{restaurantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "logo": null }
