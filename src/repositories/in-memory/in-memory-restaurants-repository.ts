@@ -25,4 +25,23 @@ export class InMemoryRestaurantsRepository implements RestaurantsRepository {
     this.items.push(restaurant);
     return restaurant;
   }
+
+  async updateById(
+    id: string,
+    data: {
+      name?: string | null;
+      logo?: string | null;
+      primaryColor?: string | null;
+      settings?: unknown | null;
+    },
+  ) {
+    const r = this.items.find(i => i.id === id);
+    if (!r) throw new Error("Restaurant not found");
+    if (data.name !== undefined) r.name = data.name!;
+    if (data.logo !== undefined) r.logo = data.logo as any;
+    if (data.primaryColor !== undefined)
+      r.primaryColor = data.primaryColor as any;
+    if (data.settings !== undefined) r.settings = data.settings as any;
+    return r;
+  }
 }

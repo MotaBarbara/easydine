@@ -7,6 +7,7 @@ import { cancelReservation } from "./controllers/reservations/cancel";
 import { listReservations } from "./controllers/list-reservations";
 import { verifyJWT } from "./middlewares/verify-jwt";
 import { ensureOwner } from "./middlewares/ensure-owner";
+import { updateRestaurant } from "./controllers/update-restaurant";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/users", register);
@@ -22,5 +23,10 @@ export async function appRoutes(app: FastifyInstance) {
     "/reservations/:reservationId/cancel",
     { preHandler: [verifyJWT] },
     cancelReservation,
+  );
+  app.put(
+    "/restaurants/:restaurantId",
+    { preHandler: [verifyJWT, ensureOwner] },
+    updateRestaurant,
   );
 }
