@@ -13,4 +13,5 @@ export interface RestaurantsRepository {
       settings?: unknown | null;
     },
   ): Promise<Restaurant>;
+  listAll(): Promise<Restaurant[]>;
 }

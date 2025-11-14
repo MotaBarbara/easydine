@@ -8,6 +8,9 @@ import { listReservations } from "./controllers/list-reservations";
 import { verifyJWT } from "./middlewares/verify-jwt";
 import { ensureOwner } from "./middlewares/ensure-owner";
 import { updateRestaurant } from "./controllers/update-restaurant";
+import { listRestaurants } from "./controllers/list-restaurants";
+import { getRestaurant } from "./controllers/get-restaurant";
+import { getRestaurantAvailability } from "./controllers/get-restaurant-availability";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/users", register);
@@ -29,4 +32,7 @@ export async function appRoutes(app: FastifyInstance) {
     { preHandler: [verifyJWT, ensureOwner] },
     updateRestaurant,
   );
+  app.get("/restaurants", listRestaurants);
+  app.get("/restaurants/:restaurantId", getRestaurant);
+  app.get("/restaurants/:restaurantId/availability", getRestaurantAvailability);
 }

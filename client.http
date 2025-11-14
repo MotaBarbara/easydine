@@ -118,3 +118,15 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "logo": null }
+
+### PUBLIC — List all restaurants
+GET {{baseUrl}}/restaurants
+Accept: application/json
+
+### PUBLIC — Get restaurant details
+GET {{baseUrl}}/restaurants/{{restaurantId}}
+Accept: application/json
+
+### PUBLIC — Check availability
+GET {{baseUrl}}/restaurants/{{restaurantId}}/availability?date=2025-11-20
+Accept: application/json
