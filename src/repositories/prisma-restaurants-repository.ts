@@ -47,4 +47,9 @@ export class PrismaRestaurantsRepository implements RestaurantsRepository {
       data: prismaData,
     });
   }
+  async listAll() {
+    return prisma.restaurant.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  }
 }
