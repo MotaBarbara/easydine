@@ -11,18 +11,15 @@ export async function createRestaurant(
     name: z.string().min(2),
     logo: z.string().url().optional().nullable(),
     primaryColor: z.string().optional().nullable(),
-    // ask help how to validate
     settings: z.record(z.any(), z.any()).optional().nullable(),
   });
-  
 
-  const { name, logo, primaryColor, settings } = bodySchema.parse(
-    request.body,
-  );
+  const { name, logo, primaryColor, settings } = bodySchema.parse(request.body);
+
+  const payload = request.user as { sub?: string } | undefined;
 
   const ownerId =
-    // @ts-expect-error auth typing depends on your plugin
-    request.user?.sub ?? (request.headers["x-user-id"] as string | undefined);
+    payload?.sub ?? (request.headers["x-user-id"] as string | undefined);
 
   if (!ownerId) {
     return reply.status(401).send({ message: "Unauthorized" });
