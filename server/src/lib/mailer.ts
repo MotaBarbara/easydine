@@ -35,13 +35,12 @@ export interface SendMailParams {
 
 export async function sendMail({ to, subject, html }: SendMailParams) {
   if (!isSmtpConfigured() || !transporter) {
-    // In development, log the email instead of sending
     console.log("\n📧 [EMAIL] (SMTP not configured - email logged instead)");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log(html.replace(/<[^>]*>/g, "")); // Strip HTML tags for console
+    console.log(html.replace(/<[^>]*>/g, ""));
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
     return;
   }
