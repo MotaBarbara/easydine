@@ -1,10 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import z, { optional } from "zod";
+import z from "zod";
 import { makeCreateReservationUseCase } from "@/use-cases/factories/make-create-reservation-use-case";
 import { ReservationConflictError } from "@/use-cases/errors/reservation-conflict-error";
 import { RestaurantNotFound } from "@/use-cases/errors/restaurant-not-found-error";
 import { RestaurantClosed } from "@/use-cases/errors/restaurant-closed-error";
 import { ReservationPastDate } from "@/use-cases/errors/reservation-past-date-error";
+import { PrismaRestaurantsRepository } from "@/repositories/prisma-restaurants-repository";
+import { sendReservationConfirmationEmail } from "@/services/send-reservation-confirmation-email";
 
 export async function createReservation(
   request: FastifyRequest,
@@ -41,6 +43,19 @@ export async function createReservation(
       groupSize,
       status: status ?? "confirmed",
     });
+
+    const restaurantsRepository = new PrismaRestaurantsRepository();
+    const restaurant = await restaurantsRepository.findById(restaurantId);
+
+    if (restaurant) {
+      sendReservationConfirmationEmail({
+        reservation,
+        restaurant,
+      }).catch(err => {
+        console.error("Failed to send confirmation email:", err);
+      });
+    }
+
     return reply.status(201).send({ reservation });
   } catch (err) {
     if (err instanceof ReservationConflictError) {

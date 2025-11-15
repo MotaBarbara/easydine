@@ -1,6 +1,7 @@
-import crypto from "node:crypto";
+import crypto, { randomUUID } from "node:crypto";
 import type { Prisma, Reservation } from "generated/prisma";
 import type { ReservationsRepository } from "../reservations-repository";
+import { prisma } from "@/lib/prisma";
 
 export class InMemoryReservationsRepository implements ReservationsRepository {
   public items: Reservation[] = [];
@@ -48,6 +49,7 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
       groupSize: data.groupSize as any,
       status: data.status as any,
       createdAt: new Date(),
+      cancelToken: randomUUID(),
     };
 
     this.items.push(reservation);
@@ -86,5 +88,8 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
         );
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
+  async findByCancelToken(token: string) {
+    return this.items.find(r => r.cancelToken === token) ?? null;
   }
 }
