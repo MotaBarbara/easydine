@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMjNiNjI4My1mOGM0LTRjMDQtYTQ0Ny0zYmExMzg1YTI2MDEiLCJlbWFpbCI6Im1vdGFAZ21haWwuY29tIiwibmFtZSI6Ik1vdGEiLCJpYXQiOjE3NjMyMDA0MzF9.bOBMxxLFvxTXucs1gYnoV2gb-TR7U1TxL1sfuyE6_Hk
-@restaurantId = d06a13cf-966f-4cbd-815b-3bdfd8c45f39
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MWEzMTBlNi1kNDI3LTRhNzQtOTlmNi1iMjVmMjEwNWZkNzIiLCJlbWFpbCI6ImJtQGdtYWlsLmNvbSIsIm5hbWUiOiJCTSIsImlhdCI6MTc2MzIxNzQzN30.mWuZ7Oi6BRKlb5vdz13rMiwdVk-6qj0MkwhY3iaiQJU
+@restaurantId = 279480ca-d07b-4fd7-beaa-404da0cf32cd
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 20c2d9e7-6587-4299-9083-ff07d660c904
 @cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
@@ -10,8 +10,8 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "Mota",
-  "email": "mota@gmail.com",
+  "name": "BM",
+  "email": "bm@gmail.com",
   "password": "123456"
 }
 
@@ -20,7 +20,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "mota@gmail.com",
+  "email": "bm@gmail.com",
   "password": "123456"
 }
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant Mota",
+  "name": "Restaurant BM",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {

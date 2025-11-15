@@ -1,0 +1,13 @@
+{
+  "name": "easydine-root",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "npm --workspace server run start:dev",
+    "dev:server": "npm --workspace server run start:dev",
+    "test:server": "npm --workspace server test"
+  }
+}
