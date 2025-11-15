@@ -72,4 +72,10 @@ export class PrismaReservationsRepository implements ReservationsRepository {
       orderBy: { date: "asc" },
     });
   }
+
+  async findByCancelToken(token: string) {
+    return prisma.reservation.findUnique({
+      where: { cancelToken: token },
+    });
+  }
 }

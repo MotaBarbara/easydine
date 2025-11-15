@@ -8,6 +8,9 @@ export const app = fastify();
 
 app.register(jwtPlugin);
 app.register(appRoutes);
+app.addHook("onRequest", async (req, _reply) => {
+  console.log("🌍 [REQUEST]", req.method, req.url);
+});
 app.setErrorHandler((error, request, reply) => {
   if (error instanceof ZodError) {
     return reply.status(400).send({

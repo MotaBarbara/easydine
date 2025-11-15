@@ -27,4 +27,6 @@ export interface ReservationsRepository {
     restaurantId: string,
     date?: Date,
   ): Promise<Reservation[]>;
+
+  findByCancelToken(token: string): Promise<Reservation | null>;
 }

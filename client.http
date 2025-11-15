@@ -1,8 +1,9 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMTIxOTQ1ZS01NTFiLTQ3YWEtOGRjOC00MDFiY2M2MTA1NzUiLCJyZXN0YXVyYW50SWQiOiJiNDYwMTljMC03NDczLTQxYTYtOTU3ZS1kYjgyZDEwNDI0ZGIiLCJlbWFpbCI6Im1vdGFAZ21haWwuY29tIiwibmFtZSI6Ik1vdGEiLCJpYXQiOjE3NjI5NzgxNTF9.C4pH9k6-CbzLuN_fo3frTeIXqOOUpeyJLcSfknB9O1w
-@restaurantId = b46019c0-7473-41a6-957e-db82d10424db
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMjNiNjI4My1mOGM0LTRjMDQtYTQ0Ny0zYmExMzg1YTI2MDEiLCJlbWFpbCI6Im1vdGFAZ21haWwuY29tIiwibmFtZSI6Ik1vdGEiLCJpYXQiOjE3NjMyMDA0MzF9.bOBMxxLFvxTXucs1gYnoV2gb-TR7U1TxL1sfuyE6_Hk
+@restaurantId = d06a13cf-966f-4cbd-815b-3bdfd8c45f39
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 20c2d9e7-6587-4299-9083-ff07d660c904
+@cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
 
 ### Create user
 POST {{baseUrl}}/users
@@ -29,17 +30,17 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant da Sabores",
+  "name": "Restaurant Mota",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
     "closedWeekly": [{ "weekday": 1, "from": "12:00", "to": "15:00" }],
     "closedDates": [{ "date": "2025-12-25", "from": "18:00", "to": "23:59" }],
     "slots": [
-      { "from": "12:00", "to": "12:00", "maxReservations": 20 },
-      { "from": "13:00", "to": "14:00", "maxReservations": 20 },
-      { "from": "18:00", "to": "20:00", "maxReservations": 20 },
-      { "from": "20:00", "to": "22:00", "maxReservations": 20 }
+      { "from": "12:00", "to": "12:00", "maxReservations": 1000 },
+      { "from": "13:00", "to": "14:00", "maxReservations": 1000 },
+      { "from": "18:00", "to": "20:00", "maxReservations": 1000 },
+      { "from": "20:00", "to": "22:00", "maxReservations": 1000 }
     ]
   }
 }
@@ -62,8 +63,8 @@ Authorization: Bearer {{token}}
   "restaurantId": "{{restaurantId}}",
   "date": "2025-11-20T18:00:00.000Z",
   "time": "19:22",
-  "customerName": "Julio",
-  "customerEmail": "julio@example.com",
+  "customerName": "Luisa",
+  "customerEmail": "barbarantmotaa@gmail.com",
   "groupSize": 5
   }
 
@@ -130,3 +131,8 @@ Accept: application/json
 ### PUBLIC — Check availability
 GET {{baseUrl}}/restaurants/{{restaurantId}}/availability?date=2025-11-20
 Accept: application/json
+
+### Public cancel reservation by token (from email)
+GET {{baseUrl}}/reservations/cancel/{{cancelToken}}
+Accept: application/json
+
