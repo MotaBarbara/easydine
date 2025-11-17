@@ -1,12 +1,10 @@
 type SearchParams = {
-  reservationId?: string;
   restaurantName?: string;
   date?: string;
   time?: string;
   guests?: string;
   customerName?: string;
 };
-
 
 type Props = {
   searchParams: Promise<SearchParams> | SearchParams;
@@ -31,8 +29,7 @@ export default async function ReservationConfirmedPage(props: Props) {
       ? await props.searchParams
       : props.searchParams;
 
-  const { reservationId, restaurantName, date, time, guests, customerName } =
-    searchParams;
+  const { restaurantName, date, time, guests, customerName } = searchParams;
 
   const prettyDate = formatDate(date);
   const guestsLabel =
@@ -58,9 +55,7 @@ export default async function ReservationConfirmedPage(props: Props) {
             <p className="text-xs font-medium uppercase text-slate-500">
               Restaurant
             </p>
-            <p className="text-sm text-slate-900">
-              {restaurantName ?? "Restaurant"}
-            </p>
+            <p className="text-sm text-slate-900">{restaurantName ?? ""}</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -85,12 +80,6 @@ export default async function ReservationConfirmedPage(props: Props) {
               <p className="text-sm text-slate-900">{guestsLabel ?? "—"}</p>
             </div>
           </div>
-
-          {reservationId && (
-            <p className="text-xs text-slate-500">
-              Reservation ID: <span className="font-mono">{reservationId}</span>
-            </p>
-          )}
         </section>
 
         <p className="text-sm text-slate-600">
