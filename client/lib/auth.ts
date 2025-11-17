@@ -14,3 +14,20 @@ export function clearToken() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(TOKEN_KEY);
 }
+
+export function parseJwt(token: string): any {
+  try {
+    const [, payload] = token.split(".");
+    const json = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
+
+export function getRestaurantIdFromToken(): string | null {
+  const token = getToken();
+  if (!token) return null;
+  const payload = parseJwt(token);
+  return payload?.restaurantId ?? null;
+}
