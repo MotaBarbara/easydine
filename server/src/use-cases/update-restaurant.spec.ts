@@ -33,7 +33,6 @@ describe("UpdateRestaurantUseCase", () => {
     });
 
     expect(restaurant.name).toBe("Updated");
-    // replaced
     expect((restaurant.settings as any).slots[0].from).toBe("20:00");
     expect((restaurant.settings as any).closedWeekly[0].weekday).toBe(1);
   });
