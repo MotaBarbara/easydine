@@ -81,5 +81,21 @@ export async function createReservation(
       });
   }
 
-  return reply.status(201).send({ reservation });
+  return reply.status(201).send({
+    reservation: {
+      id: reservation.id,
+      date: reservation.date,
+      time: reservation.time,
+      status: reservation.status,
+      groupSize: reservation.groupSize,
+      customerName: reservation.customerName,
+      customerEmail: reservation.customerEmail,
+    },
+    restaurant: {
+      id: restaurant?.id,
+      name: restaurant?.name,
+      logo: restaurant?.logo,
+      primaryColor: restaurant?.primaryColor,
+    },
+  });
 }

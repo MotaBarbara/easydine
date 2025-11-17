@@ -3,9 +3,13 @@ import { appRoutes } from "./routes";
 import { env } from "process";
 import z, { ZodError } from "zod";
 import jwtPlugin from "@/http/plugins/jwt";
+import cors from "@fastify/cors";
 
 export const app = fastify();
-
+app.register(cors, {
+  origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+});
 app.register(jwtPlugin);
 app.register(appRoutes);
 app.addHook("onRequest", async (req, _reply) => {

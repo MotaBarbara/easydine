@@ -1,18 +1,25 @@
 "use client";
+
 import { useState } from "react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 type BookingFormProps = {
   restaurantId: string;
+  restaurantName: string;
 };
 
 type Status =
   | { state: "idle" }
   | { state: "submitting" }
-  | { state: "success"; message: string }
   | { state: "error"; message: string };
 
-export default function BookingForm({ restaurantId }: BookingFormProps) {
+export default function BookingForm({
+  restaurantId,
+  restaurantName,
+}: BookingFormProps) {
+  const router = useRouter();
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("19:00");
   const [name, setName] = useState("");
@@ -45,20 +52,33 @@ export default function BookingForm({ restaurantId }: BookingFormProps) {
         }),
       });
 
+      const body = await res.json().catch(() => null);
+
       if (!res.ok) {
-        const body = await res.json().catch(() => null);
         throw new Error(body?.message ?? "Failed to create reservation");
       }
 
-      setStatus({
-        state: "success",
-        message:
-          "Reservation created! Check your email for confirmation and the cancellation link.",
+      const reservation = body?.reservation ?? body ?? {};
+
+      const reservationId: string =
+        reservation.id ?? reservation.reservationId ?? "";
+
+      const params = new URLSearchParams({
+        reservationId,
+        restaurantName,
+        date: reservation.date ?? isoDate,
+        time: reservation.time ?? time,
+        guests: String(reservation.groupSize ?? groupSize),
+        customerName: name,
       });
 
+      router.push(`/reservations/confirmed?${params.toString()}`);
       setName("");
       setEmail("");
       setGroupSize(2);
+      setDate("");
+      setTime("19:00");
+      setStatus({ state: "idle" });
     } catch (err) {
       console.error(err);
       setStatus({
@@ -144,9 +164,6 @@ export default function BookingForm({ restaurantId }: BookingFormProps) {
         {isSubmitting ? "Booking..." : "Confirm reservation"}
       </button>
 
-      {status.state === "success" && (
-        <p className="text-sm text-emerald-600">{status.message}</p>
-      )}
       {status.state === "error" && (
         <p className="text-sm text-red-600">{status.message}</p>
       )}
