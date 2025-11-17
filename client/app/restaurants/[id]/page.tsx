@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
-import { apiFetch } from "../../../lib/api.ts";
-import type { Restaurant } from "../../../types/restaurant.ts";
-import BookingForm from "./booking-form.tsx";
-import React from "react";
+import { apiFetch } from "../../../lib/api";
+import type { Restaurant } from "../../../types/restaurant";
+import BookingForm from "./booking-form";
 
 type RestaurantDetail = Restaurant & {
   settings?: unknown;
@@ -16,11 +15,12 @@ async function getRestaurant(id: string) {
 }
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function RestaurantPage({ params }: Props) {
-  const restaurant = await getRestaurant(params.id).catch(() => null);
+  const { id } = await params;
+  const restaurant = await getRestaurant(id).catch(() => null);
 
   if (!restaurant) {
     notFound();
@@ -44,7 +44,10 @@ export default async function RestaurantPage({ params }: Props) {
           </p>
         </header>
 
-        <BookingForm restaurantId={restaurant.id} />
+        <BookingForm
+          restaurantId={restaurant.id}
+          restaurantName={restaurant.name}
+        />
       </div>
     </main>
   );
