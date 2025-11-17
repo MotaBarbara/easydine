@@ -44,10 +44,10 @@ export async function createReservation(
   const restaurantsRepo = new PrismaRestaurantsRepository();
   const restaurant = await restaurantsRepo.findById(restaurantId);
 
+  const frontendBase = process.env.FRONTEND_BASE_URL ?? "http://localhost:3000";
+
   if (restaurant) {
-    const cancelUrl = `${
-      process.env.APP_BASE_URL ?? "http://localhost:3333"
-    }/reservations/cancel/${reservation.cancelToken}`;
+    const cancelUrl = `${frontendBase}/reservations/cancel/${reservation.cancelToken}`;
 
     console.log("[EMAIL] about to send", {
       to: reservation.customerEmail,

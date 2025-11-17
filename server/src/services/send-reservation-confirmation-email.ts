@@ -2,7 +2,8 @@ import type { Reservation } from "generated/prisma";
 import type { Restaurant } from "generated/prisma";
 import { sendMail } from "@/lib/mailer";
 
-const APP_BASE_URL = process.env.APP_BASE_URL ?? "http://localhost:3333";
+const FRONTEND_BASE_URL =
+  process.env.FRONTEND_BASE_URL ?? "http://localhost:3000";
 
 export async function sendReservationConfirmationEmail(params: {
   reservation: Reservation;
@@ -10,7 +11,7 @@ export async function sendReservationConfirmationEmail(params: {
 }) {
   const { reservation, restaurant } = params;
 
-  const cancelUrl = `${APP_BASE_URL}/reservations/cancel/${reservation.cancelToken}`;
+  const cancelUrl = `${FRONTEND_BASE_URL}/reservations/cancel/${reservation.cancelToken}`;
 
   const subject = `Your reservation at ${restaurant.name} is confirmed`;
 

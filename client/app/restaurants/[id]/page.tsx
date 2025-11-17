@@ -18,10 +18,10 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-export default async function RestaurantPage({ params }: Props) {
-  const { id } = await params;
-  const restaurant = await getRestaurant(id).catch(() => null);
+export default async function RestaurantPage(props: Props) {
+  const { id } = await props.params;
 
+  const restaurant = await getRestaurant(id).catch(() => null);
   if (!restaurant) {
     notFound();
   }
