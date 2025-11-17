@@ -12,8 +12,8 @@ export async function getRestaurant(
   reply: FastifyReply,
 ) {
   const { restaurantId } = paramsSchema.parse(request.params);
-  const useCase = makeGetRestaurantUseCase();
 
+  const useCase = makeGetRestaurantUseCase();
   try {
     const { restaurant } = await useCase.execute({ restaurantId });
     return reply.status(200).send({ restaurant });

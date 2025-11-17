@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MWEzMTBlNi1kNDI3LTRhNzQtOTlmNi1iMjVmMjEwNWZkNzIiLCJlbWFpbCI6ImJtQGdtYWlsLmNvbSIsIm5hbWUiOiJCTSIsImlhdCI6MTc2MzIxNzQzN30.mWuZ7Oi6BRKlb5vdz13rMiwdVk-6qj0MkwhY3iaiQJU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjJhOTg5Ni0yMTViLTQ0MjItYTkyMi02N2NlYjYxOWQ2ZDQiLCJlbWFpbCI6ImJtQGdtYWlsLmNvbSIsIm5hbWUiOiJKTSIsImlhdCI6MTc2MzM5ODMzOH0.jfqXVLUyFTWc7lUdDTZwdri0ziWL4ArCGOvHNOG63TQ
 @restaurantId = 279480ca-d07b-4fd7-beaa-404da0cf32cd
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 20c2d9e7-6587-4299-9083-ff07d660c904
@@ -10,7 +10,7 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "BM",
+  "name": "JM",
   "email": "bm@gmail.com",
   "password": "123456"
 }
@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant BM",
+  "name": "Restaurant Ml",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
