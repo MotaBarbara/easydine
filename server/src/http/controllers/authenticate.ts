@@ -12,9 +12,8 @@ export async function authenticate(
     password: z.string().min(6),
   });
 
-  const { email, password } = authenticateBodySchema.parse(request.body);
-
   try {
+    const { email, password } = authenticateBodySchema.parse(request.body);
     const { user } = await makeAuthenticateUseCase().execute({
       email,
       password,
@@ -29,7 +28,14 @@ export async function authenticate(
     return reply.status(200).send({ token });
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
-      return reply.status(401).send({ message: error.message });
+      return reply
+        .status(401)
+        .send({ message: "Incorrect email or password." });
+    }
+    if (error instanceof z.ZodError) {
+      return reply
+        .status(400)
+        .send({ message: "Please enter valid credentials." });
     }
     throw error;
   }
