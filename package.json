@@ -9,5 +9,8 @@
     "dev": "npm --workspace server run start:dev",
     "dev:server": "npm --workspace server run start:dev",
     "test:server": "npm --workspace server test"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

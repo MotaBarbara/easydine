@@ -46,30 +46,33 @@ export class PrismaReservationsRepository implements ReservationsRepository {
   }
 
   async listByRestaurantAndDate(restaurantId: string, date?: Date) {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
     if (!date) {
       return prisma.reservation.findMany({
         where: {
           restaurantId,
-          date: { gte: new Date() },
+          date: { gte: today },
+          status: "confirmed",
         },
-        orderBy: { date: "asc" },
+        orderBy: [{ date: "asc" }, { time: "asc" }],
       });
     }
 
-    const start = new Date(date);
-    start.setUTCHours(0, 0, 0, 0);
-    const end = new Date(start);
-    end.setUTCDate(end.getUTCDate() + 1);
+    const startOfDay = new Date(date);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setUTCDate(endOfDay.getUTCDate() + 1);
 
     return prisma.reservation.findMany({
       where: {
         restaurantId,
-        date: {
-          gte: start,
-          lt: end,
-        },
+        date: { gte: startOfDay, lt: endOfDay },
+        status: "confirmed",
       },
-      orderBy: { date: "asc" },
+      orderBy: { time: "asc" },
     });
   }
 

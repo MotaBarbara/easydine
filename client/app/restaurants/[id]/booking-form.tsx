@@ -35,7 +35,9 @@ export default function BookingForm({
       const apiBase =
         process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3333";
 
-      const isoDate = new Date(date).toISOString();
+      const isoDate = `${date}T12:00:00.000Z`;
+
+      console.log("Sending date:", isoDate);
 
       const res = await fetch(`${apiBase}/reservations`, {
         method: "POST",
