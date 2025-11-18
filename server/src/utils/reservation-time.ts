@@ -19,11 +19,18 @@ export function timeInRange(time: string, from?: string, to?: string) {
 }
 
 export function isPastDay(date: Date) {
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-  const d = new Date(date);
-  d.setUTCHours(0, 0, 0, 0);
-  return d.getTime() < today.getTime();
+  const now = new Date();
+  const today = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+  );
+  const inputDay = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+  );
+  return inputDay < today;
 }
 
 export function isClosedAt(

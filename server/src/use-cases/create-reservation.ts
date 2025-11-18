@@ -10,7 +10,7 @@ import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
 
 interface CreateReservationUseCaseRequest {
   restaurantId: string;
-  date: Date;
+  date: string; // ← ISO string with Z (e.g. "2025-11-18T00:00:00.000Z")
   time: string;
   customerName: string;
   customerEmail: string;
@@ -30,33 +30,34 @@ export class CreateReservationUseCase {
 
   async execute({
     restaurantId,
-    date,
+    date: dateString,
     time,
     customerName,
     customerEmail,
     groupSize,
     status,
   }: CreateReservationUseCaseRequest): Promise<CreateReservationUseCaseResponse> {
+    // FORCE UTC — this is the key line
+    const date = new Date(
+      dateString.endsWith("Z") || dateString.includes("+")
+        ? dateString
+        : dateString + "Z",
+    );
+
+    console.log("Reservation date (UTC):", date.toISOString());
+
     const restaurant = await this.restaurantsRepository.findById(restaurantId);
-    if (!restaurant) {
-      throw new RestaurantNotFound();
-    }
+    if (!restaurant) throw new RestaurantNotFound();
 
     const settings = (restaurant.settings as any as RestaurantSettings) ?? {};
 
-    if (isPastDay(date)) {
-      throw new ReservationPastDate();
-    }
-
-    if (isClosedAt(settings, date, time)) {
-      throw new RestaurantClosed();
-    }
+    if (isPastDay(date)) throw new ReservationPastDate();
+    if (isClosedAt(settings, date, time)) throw new RestaurantClosed();
 
     const slots = settings.slots ?? [];
-
     const currentSlot = slots.find(s => time >= s.from && time < s.to);
 
-    const maxReservations = currentSlot?.maxReservations ?? 1;
+    const maxReservations = currentSlot?.maxReservations ?? 9000;
 
     const usedCovers = await this.reservationsRepository.sumGroupSizePerSlot(
       restaurantId,
@@ -70,13 +71,13 @@ export class CreateReservationUseCase {
     }
 
     const reservation = await this.reservationsRepository.create({
+      restaurant: { connect: { id: restaurantId } },
       date,
       time,
       customerName,
       customerEmail,
       groupSize,
       status: status ?? "confirmed",
-      restaurant: { connect: { id: restaurantId } },
     });
 
     return { reservation };

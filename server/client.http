@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MWEzMTBlNi1kNDI3LTRhNzQtOTlmNi1iMjVmMjEwNWZkNzIiLCJlbWFpbCI6ImJtQGdtYWlsLmNvbSIsIm5hbWUiOiJCTSIsImlhdCI6MTc2MzIxNzQzN30.mWuZ7Oi6BRKlb5vdz13rMiwdVk-6qj0MkwhY3iaiQJU
-@restaurantId = 279480ca-d07b-4fd7-beaa-404da0cf32cd
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMjQyNTNlNS0xYWE4LTQ2NGItOTdmOS1iZmI2ZTk3YjM4NjIiLCJyZXN0YXVyYW50SWQiOiI2MjQ1NWFiOC0xYzE5LTQ1N2ItYTY1OC0xYTRlODI1MTM0YmQiLCJlbWFpbCI6ImJAZ21haWwuY29tIiwibmFtZSI6IkJtb3RhIiwiaWF0IjoxNzYzNDkyMzY2fQ.NjUemRHZ8aBpZ8rdF9ygSVEfP-tWitPt5hth2-4EMc4
+@restaurantId = 62455ab8-1c19-457b-a658-1a4e825134bd
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
-@reservationId = 20c2d9e7-6587-4299-9083-ff07d660c904
+@reservationId = 34dd8bca-1d38-41d3-935f-14f7dfd8ac63
 @cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
 
 ### Create user
@@ -10,8 +10,8 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "BM",
-  "email": "bm@gmail.com",
+  "name": "Bmota",
+  "email": "b@gmail.com",
   "password": "123456"
 }
 
@@ -20,7 +20,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "bm@gmail.com",
+  "email": "b@gmail.com",
   "password": "123456"
 }
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant BM",
+  "name": "Restaurant da Mota",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
@@ -61,11 +61,11 @@ Authorization: Bearer {{token}}
 
 {
   "restaurantId": "{{restaurantId}}",
-  "date": "2025-11-20T18:00:00.000Z",
-  "time": "19:22",
-  "customerName": "Luisa",
+  "date": "2025-11-18T18:00:00.000Z",
+  "time": "21:43",
+  "customerName": "20:36 VICTORY?",
   "customerEmail": "barbarantmotaa@gmail.com",
-  "groupSize": 5
+  "groupSize": 20
   }
 
 
@@ -74,7 +74,7 @@ PATCH {{baseUrl}}/reservations/{{reservationId}}/cancel
 Authorization: Bearer {{token}}
 
 ### List reservations for a specific date
-GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations?date=2025-11-19
+GET {{baseUrl}}/restaurants/{{restaurantId}}/reservations?date=2025-11-18
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -104,9 +104,9 @@ Authorization: Bearer {{token}}
   "primaryColor": "#C0392B",
   "settings": {
     "slots": [
-      { "from": "12:00", "to": "13:30", "maxReservations": 20 },
-      { "from": "18:00", "to": "20:00", "maxReservations": 24 },
-      { "from": "20:00", "to": "22:00", "maxReservations": 24 }
+      { "from": "12:00", "to": "13:30", "maxReservations": 9000 },
+      { "from": "18:00", "to": "20:00", "maxReservations": 9000 },
+      { "from": "20:00", "to": "22:00", "maxReservations": 9000 }
     ],
     "closedWeekly": [{ "weekday": 1, "from": "12:00", "to": "15:00" }],
     "closedDates": [{ "date": "2025-12-25", "from": "18:00", "to": "23:59" }]
