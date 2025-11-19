@@ -23,7 +23,7 @@ type Slot = {
 };
 
 type ClosedWeekly = {
-  weekday: number; // 0–6
+  weekday: number;
 
   from?: string;
 
@@ -107,7 +107,7 @@ export default function CreateRestaurantForm() {
     setClosedWeekly(prev => [
       ...prev,
 
-      { weekday: 1, from: "00:00", to: "23:59" }, // default: closed all Monday
+      { weekday: 1, from: "00:00", to: "23:59" },
     ]);
   }
 
@@ -199,7 +199,11 @@ export default function CreateRestaurantForm() {
         throw new Error(body?.message ?? "Failed to create restaurant");
       }
 
-      router.push("/owner");
+      if (body?.restaurant?.id) {
+        router.push(`/owner/${body.restaurant.id}`);
+      } else {
+        router.push("/owner");
+      }
     } catch (err) {
       console.error(err);
 

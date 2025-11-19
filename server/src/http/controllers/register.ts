@@ -1,4 +1,3 @@
-// import { InMemoryUsersRepository } from "@/repositories/in-memory-users-repository";
 import { UserAlreadyExistsError } from "@/use-cases/errors/user-already-exists-error";
 import { makeRegisterUseCase } from "@/use-cases/factories/make-register-use-case";
 import type { FastifyReply, FastifyRequest } from "fastify";

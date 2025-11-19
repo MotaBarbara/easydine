@@ -1,4 +1,3 @@
-// app/reservations/cancel/[token]/cancel-reservation-screen.tsx
 "use client";
 
 import { useState } from "react";

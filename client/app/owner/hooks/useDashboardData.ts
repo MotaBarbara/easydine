@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getToken, getRestaurantIdFromToken } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3333";
@@ -21,7 +21,7 @@ export type Reservation = {
   groupSize: number;
 };
 
-export function useDashboardData() {
+export function useDashboardData(restaurantId: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -30,16 +30,7 @@ export function useDashboardData() {
   useEffect(() => {
     async function load() {
       const token = getToken();
-      if (!token) return;
-
-      let restaurantId = getRestaurantIdFromToken();
-      
-      // If restaurantId is not in token, try to fetch it from API
-      if (!restaurantId) {
-        const { getRestaurantIdFromAPI } = await import("../../../lib/auth");
-        restaurantId = await getRestaurantIdFromAPI();
-        if (!restaurantId) return;
-      }
+      if (!token || !restaurantId) return;
 
       try {
         const [restaurantRes, reservationsRes] = await Promise.all([
@@ -82,7 +73,7 @@ export function useDashboardData() {
     }
 
     load();
-  }, []);
+  }, [restaurantId]);
 
   return { loading, error, restaurant, reservations };
 }

@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YmQ2NmRjZC02NTc4LTRhNTQtYjlkNC1jOGE0Mjg2MjBmN2MiLCJlbWFpbCI6ImJAZ21haWwuY29tIiwibmFtZSI6Ikxtb3RhIiwiaWF0IjoxNzYzNTA0NzY2fQ.K5i2uSheaCOptdo8Kln8Yw_j8Xx5ADdoY_ZftGZgYP0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRjMTkyOC04NjEzLTQ4YTgtOTUwMi0zNzkwM2M1ZDAyYzQiLCJlbWFpbCI6IjJAZ21haWwuY29tIiwibmFtZSI6IjIiLCJpYXQiOjE3NjM1ODExMTB9._v9od3720_YASFtwEsg3hsWCzDMsHF_dGsW_8W2cFqE
+@restaurantId = ba7a030a-d565-415a-888c-23ab47384828
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 34dd8bca-1d38-41d3-935f-14f7dfd8ac63
 @cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
@@ -9,8 +10,8 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "Lmota",
-  "email": "b@gmail.com",
+  "name": "2",
+  "email": "2@gmail.com",
   "password": "123456"
 }
 
@@ -19,7 +20,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "b@gmail.com",
+  "email": "2@gmail.com",
   "password": "123456"
 }
 
@@ -29,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant da ",
+  "name": "Restaurant 3 do 1",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
@@ -134,4 +135,9 @@ Accept: application/json
 ### Public cancel reservation by token (from email)
 GET {{baseUrl}}/reservations/cancel/{{cancelToken}}
 Accept: application/json
+
+### Get current user's restaurants (all restaurants owned by logged in user)
+GET {{baseUrl}}/me/restaurants
+Accept: application/json
+Authorization: Bearer {{token}}
 

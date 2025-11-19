@@ -10,7 +10,7 @@ import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
 
 interface CreateReservationUseCaseRequest {
   restaurantId: string;
-  date: string; // ← ISO string with Z (e.g. "2025-11-18T00:00:00.000Z")
+  date: string;
   time: string;
   customerName: string;
   customerEmail: string;
@@ -37,7 +37,6 @@ export class CreateReservationUseCase {
     groupSize,
     status,
   }: CreateReservationUseCaseRequest): Promise<CreateReservationUseCaseResponse> {
-    // FORCE UTC — this is the key line
     const date = new Date(
       dateString.endsWith("Z") || dateString.includes("+")
         ? dateString
