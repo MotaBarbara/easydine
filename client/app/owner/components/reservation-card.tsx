@@ -21,10 +21,14 @@ export default function ReservationCard({
     day: "numeric",
   });
 
-  const formattedTime = dateObj.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const formatTime = (timeString: string) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const hour12 = hours % 12 || 12;
+    const ampm = hours >= 12 ? "PM" : "AM";
+    return `${hour12}:${String(minutes).padStart(2, "0")} ${ampm}`;
+  };
+
+  const formattedTime = reservation.slot ? formatTime(reservation.slot) : "";
 
   return (
     <div className="rounded-lg border bg-white p-4 shadow-sm flex justify-between">

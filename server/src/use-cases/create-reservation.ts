@@ -3,7 +3,7 @@ import { ReservationConflictError } from "./errors/reservation-conflict-error";
 import type { Reservation } from "generated/prisma";
 import type { RestaurantsRepository } from "@/repositories/restaurants-repository";
 import type { RestaurantSettings } from "@/types/restaurant-settings";
-import { isPastDay, isClosedAt } from "@/utils/reservation-time";
+import { isPastDateTime, isClosedAt } from "@/utils/reservation-time";
 import { ReservationPastDate } from "./errors/reservation-past-date-error";
 import { RestaurantClosed } from "./errors/restaurant-closed-error";
 import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
@@ -43,14 +43,13 @@ export class CreateReservationUseCase {
         : dateString + "Z",
     );
 
-    console.log("Reservation date (UTC):", date.toISOString());
 
     const restaurant = await this.restaurantsRepository.findById(restaurantId);
     if (!restaurant) throw new RestaurantNotFound();
 
     const settings = (restaurant.settings as any as RestaurantSettings) ?? {};
 
-    if (isPastDay(date)) throw new ReservationPastDate();
+    if (isPastDateTime(date, time)) throw new ReservationPastDate();
     if (isClosedAt(settings, date, time)) throw new RestaurantClosed();
 
     const slots = settings.slots ?? [];

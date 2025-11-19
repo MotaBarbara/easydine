@@ -17,24 +17,14 @@ export async function createReservation(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  console.log("is it running?");
   const { restaurantId, date, time, customerName, customerEmail, groupSize } =
     bodySchema.parse(request.body);
-
-  console.log("✅ [HTTP] parsed body", {
-    restaurantId,
-    date,
-    time,
-    customerName,
-    customerEmail,
-    groupSize,
-  });
 
   const useCase = makeCreateReservationUseCase();
 
   const { reservation } = await useCase.execute({
     restaurantId,
-    date: new Date(date),
+    date
     time,
     customerName,
     customerEmail,

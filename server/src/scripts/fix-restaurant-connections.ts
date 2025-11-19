@@ -11,8 +11,6 @@ async function fixRestaurantConnections() {
     process.exit(1);
   }
 
-  console.log(`Found user: ${user.email} (${user.id})`);
-
   const restaurants = await prisma.restaurant.findMany({
     where: {
       OR: [
@@ -23,9 +21,6 @@ async function fixRestaurantConnections() {
     },
   });
 
-  console.log(`Found ${restaurants.length} restaurants to connect`);
-
-  // Connect user to each restaurant using the new many-to-many relationship
   for (const restaurant of restaurants) {
     try {
       await prisma.restaurant.update({
@@ -36,13 +31,11 @@ async function fixRestaurantConnections() {
           },
         },
       });
-      console.log(`✓ Connected user to: ${restaurant.name}`);
     } catch (error) {
       console.error(`✗ Failed to connect to ${restaurant.name}:`, error);
     }
   }
 
-  console.log("\nDone! All restaurants should now be connected to the user.");
 }
 
 fixRestaurantConnections()

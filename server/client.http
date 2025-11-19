@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant 3 do 1",
+  "name": "Restaurant 3 do 2",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {

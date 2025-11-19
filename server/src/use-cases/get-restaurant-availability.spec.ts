@@ -31,7 +31,6 @@ describe("GetRestaurantAvailabilityUseCase", () => {
 
     restaurantId = restaurant.id;
 
-    // seed some reservations
     await reservationsRepo.create({
       restaurant: { connect: { id: restaurantId } },
       date: new Date("2099-11-10T18:00:00.000Z"),

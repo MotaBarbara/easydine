@@ -54,11 +54,19 @@ export function useDashboardData(restaurantId: string) {
             reservationsData?.message ?? "Failed to load reservations",
           );
 
-        const normalizedReservations: Reservation[] = Array.isArray(
-          reservationsData,
-        )
+        const rawReservations = Array.isArray(reservationsData)
           ? reservationsData
           : reservationsData?.reservations ?? [];
+
+        const normalizedReservations: Reservation[] = rawReservations.map(
+          (r: any) => ({
+            id: r.id,
+            slot: r.slot || r.time || "",
+            date: r.date,
+            customerName: r.customerName,
+            groupSize: r.groupSize,
+          }),
+        );
 
         setRestaurant(restaurantData);
         setReservations(normalizedReservations);

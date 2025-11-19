@@ -27,8 +27,49 @@ export default function BookingForm({
   const [groupSize, setGroupSize] = useState(2);
   const [status, setStatus] = useState<Status>({ state: "idle" });
 
+  const today = new Date().toISOString().split("T")[0];
+  
+  const getMinTime = () => {
+    if (date !== today) return undefined;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes() + 1).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+  
+  const isPastDateTime = () => {
+    if (!date) return false;
+    
+    const selectedDate = new Date(date);
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    if (selectedDate < todayDate) return true;
+    
+    if (selectedDate.getTime() === todayDate.getTime()) {
+      const [hours, minutes] = time.split(":").map(Number);
+      const now = new Date();
+      const selectedTime = new Date();
+      selectedTime.setHours(hours, minutes || 0, 0, 0);
+      
+      return selectedTime < now;
+    }
+    
+    return false;
+  };
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    if (isPastDateTime()) {
+      setStatus({
+        state: "error",
+        message: "Cannot make reservations for past dates or times.",
+      });
+      return;
+    }
+    
     setStatus({ state: "submitting" });
 
     try {
@@ -37,7 +78,6 @@ export default function BookingForm({
 
       const isoDate = `${date}T12:00:00.000Z`;
 
-      console.log("Sending date:", isoDate);
 
       const res = await fetch(`${apiBase}/reservations`, {
         method: "POST",
@@ -108,6 +148,7 @@ export default function BookingForm({
             className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
             value={date}
             onChange={e => setDate(e.target.value)}
+            min={today}
             required
           />
         </label>
@@ -119,8 +160,14 @@ export default function BookingForm({
             className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
             value={time}
             onChange={e => setTime(e.target.value)}
+            min={getMinTime()}
             required
           />
+          {isPastDateTime() && (
+            <p className="text-xs text-red-600 mt-1">
+              This time has already passed. Please select a future time.
+            </p>
+          )}
         </label>
       </div>
 
