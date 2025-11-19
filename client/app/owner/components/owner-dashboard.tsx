@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { getToken, getRestaurantIdFromToken } from "@/lib/auth";
-import { useDashboardData } from "../../hooks/useDashboardData";
+import { getToken, getRestaurantIdFromToken, getRestaurantIdFromAPI } from "@/lib/auth";
+import { useDashboardData } from "../hooks/useDashboardData";
 import ReservationsSummary from "./reservations-summary";
 import ReservationsList from "./reservations-list";
 import { useEffect, useState } from "react";
@@ -14,19 +14,29 @@ export default function OwnerDashboard() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const token = getToken();
-    const restaurantId = getRestaurantIdFromToken();
+    async function checkAuth() {
+      const token = getToken();
+      if (!token) {
+        router.replace("/login");
+        return;
+      }
 
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-    if (!restaurantId) {
-      router.replace("/owner/restaurant/new");
-      return;
+      let restaurantId = getRestaurantIdFromToken();
+      
+      // If restaurantId is not in token, try to fetch it from API
+      if (!restaurantId) {
+        restaurantId = await getRestaurantIdFromAPI();
+        
+        if (!restaurantId) {
+          router.replace("/owner/restaurant/new");
+          return;
+        }
+      }
+
+      setIsReady(true);
     }
 
-    setIsReady(true);
+    checkAuth();
   }, [router]);
 
   if (!isReady) return null;

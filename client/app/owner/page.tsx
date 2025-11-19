@@ -1,6 +1,6 @@
 "use client";
 
-import OwnerDashboard from "../owner/dashboard/owner-dashboard";
+import OwnerDashboard from "./components/owner-dashboard";
 import { getToken } from "@/lib/auth";
 
 const token = getToken();

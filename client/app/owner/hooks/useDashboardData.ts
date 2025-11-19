@@ -30,8 +30,16 @@ export function useDashboardData() {
   useEffect(() => {
     async function load() {
       const token = getToken();
-      const restaurantId = getRestaurantIdFromToken();
-      if (!token || !restaurantId) return;
+      if (!token) return;
+
+      let restaurantId = getRestaurantIdFromToken();
+      
+      // If restaurantId is not in token, try to fetch it from API
+      if (!restaurantId) {
+        const { getRestaurantIdFromAPI } = await import("../../../lib/auth");
+        restaurantId = await getRestaurantIdFromAPI();
+        if (!restaurantId) return;
+      }
 
       try {
         const [restaurantRes, reservationsRes] = await Promise.all([
