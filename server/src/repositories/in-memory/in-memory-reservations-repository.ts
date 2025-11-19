@@ -78,7 +78,6 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
       .filter(r => {
         if (!date) return true;
 
-        // const d = new Date(r.date);
         const d = r.date instanceof Date ? r.date : new Date(r.date);
         const target = new Date(date);
         return (

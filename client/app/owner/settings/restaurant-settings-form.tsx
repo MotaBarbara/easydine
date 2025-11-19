@@ -58,7 +58,6 @@ interface RestaurantSettingsFormProps {
   restaurant: Restaurant;
 }
 
-// Validation functions
 function validateTimeFormat(time: string): boolean {
   return /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
 }
@@ -89,7 +88,6 @@ function validateSlots(slots: Slot[]): string | null {
     if (error) return error;
   }
 
-  // Check for overlaps
   const sorted = [...slots].sort((a, b) => a.from.localeCompare(b.from));
   for (let i = 1; i < sorted.length; i++) {
     const curr = sorted[i]!;
@@ -134,7 +132,6 @@ function validateClosedDate(item: ClosedDate): string | null {
   return null;
 }
 
-// Human-friendly preview functions
 function formatTime(time: string): string {
   const [hours, minutes] = time.split(":");
   const h = parseInt(hours, 10);
@@ -245,7 +242,6 @@ export default function RestaurantSettingsForm({
   >({});
 
   useEffect(() => {
-    // Validate slots on change
     const errors: Record<number, string> = {};
     slots.forEach((slot, index) => {
       const error = validateSlot(slot);
@@ -253,7 +249,6 @@ export default function RestaurantSettingsForm({
     });
     const overlapError = validateSlots(slots);
     if (overlapError) {
-      // Mark all slots as having overlap error
       slots.forEach((_, index) => {
         errors[index] = overlapError;
       });
@@ -262,7 +257,6 @@ export default function RestaurantSettingsForm({
   }, [slots]);
 
   useEffect(() => {
-    // Validate closedWeekly on change
     const errors: Record<number, string> = {};
     closedWeekly.forEach((item, index) => {
       const error = validateClosedWeekly(item);
@@ -272,7 +266,6 @@ export default function RestaurantSettingsForm({
   }, [closedWeekly]);
 
   useEffect(() => {
-    // Validate closedDates on change
     const errors: Record<number, string> = {};
     closedDates.forEach((item, index) => {
       const error = validateClosedDate(item);
@@ -347,7 +340,6 @@ export default function RestaurantSettingsForm({
       return;
     }
 
-    // Final validation
     const slotsError = validateSlots(slots);
     if (slotsError) {
       setStatus({
@@ -425,7 +417,7 @@ export default function RestaurantSettingsForm({
 
       setStatus({ state: "success" });
       setTimeout(() => {
-        router.push("/owner");
+        router.push(`/owner/${restaurant.id}`);
       }, 1500);
     } catch (err) {
       console.error(err);

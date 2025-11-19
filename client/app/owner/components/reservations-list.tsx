@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ReservationCard from "./reservation-card";
-import { Reservation } from "../../hooks/useDashboardData";
+import { Reservation } from "../hooks/useDashboardData";
 
 type Props = {
   reservations: Reservation[];
@@ -17,7 +17,6 @@ export default function ReservationsList({
   const [search, setSearch] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
-  // 🔍 Apply filters
   const filtered = reservations.filter(r => {
     const matchesName = r.customerName
       .toLowerCase()
@@ -26,7 +25,6 @@ export default function ReservationsList({
     return matchesName && matchesDate;
   });
 
-  // 📄 Pagination after filters
   const totalPages = Math.ceil(filtered.length / pageSize);
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
@@ -34,7 +32,6 @@ export default function ReservationsList({
 
   return (
     <div className="space-y-4">
-      {/* FILTER BAR */}
       <div className="flex gap-3 items-center">
         <input
           type="text"
@@ -58,7 +55,6 @@ export default function ReservationsList({
         />
       </div>
 
-      {/* LIST */}
       <div className="space-y-3">
         {paginated.length === 0 && (
           <p className="text-sm text-slate-500">No reservations found.</p>
@@ -69,7 +65,6 @@ export default function ReservationsList({
         ))}
       </div>
 
-      {/* PAGINATION */}
       {filtered.length > pageSize && (
         <div className="flex justify-between mt-4">
           <button

@@ -1,4 +1,3 @@
-// src/use-cases/create-restaurant.ts
 import type { RestaurantsRepository } from "@/repositories/restaurants-repository";
 import { Prisma, type Restaurant } from "generated/prisma";
 import { RestaurantAlreadyExistsError } from "./errors/restaurant-already-exists-error";
@@ -41,7 +40,16 @@ export class CreateRestaurantUseCase {
       settings: settings === null ? Prisma.JsonNull : settings,
     });
 
-    await this.usersRepo.setRestaurantId(ownerId, restaurant.id);
+    const { prisma } = await import("@/lib/prisma");
+    await prisma.restaurant.update({
+      where: { id: restaurant.id },
+      data: {
+        owners: {
+          connect: { id: ownerId },
+        },
+      },
+    });
+
 
     return { restaurant };
   }

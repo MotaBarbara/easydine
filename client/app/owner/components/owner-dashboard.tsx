@@ -1,43 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { getToken, getRestaurantIdFromToken, getRestaurantIdFromAPI } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 import { useDashboardData } from "../hooks/useDashboardData";
 import ReservationsSummary from "./reservations-summary";
 import ReservationsList from "./reservations-list";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
-export default function OwnerDashboard() {
+interface OwnerDashboardProps {
+  restaurantId: string;
+}
+
+export default function OwnerDashboard({ restaurantId }: OwnerDashboardProps) {
   const router = useRouter();
-  const { loading, error, restaurant, reservations } = useDashboardData();
+  const { loading, error, restaurant, reservations } = useDashboardData(restaurantId);
 
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    async function checkAuth() {
-      const token = getToken();
-      if (!token) {
-        router.replace("/login");
-        return;
-      }
-
-      let restaurantId = getRestaurantIdFromToken();
-      
-      // If restaurantId is not in token, try to fetch it from API
-      if (!restaurantId) {
-        restaurantId = await getRestaurantIdFromAPI();
-        
-        if (!restaurantId) {
-          router.replace("/owner/restaurant/new");
-          return;
-        }
-      }
-
-      setIsReady(true);
+    const token = getToken();
+    if (!token) {
+      router.replace("/login");
+      return;
     }
 
-    checkAuth();
-  }, [router]);
+    if (!restaurantId) {
+      router.replace("/owner");
+      return;
+    }
+
+    setIsReady(true);
+  }, [router, restaurantId]);
 
   if (!isReady) return null;
 
@@ -84,7 +78,21 @@ export default function OwnerDashboard() {
   const upcomingCount = reservations.length;
 
   return (
-    <div className="mt-8 space-y-8 max-w-200 m-auto">
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {restaurant?.name || "Restaurant Dashboard"}
+          </h1>
+          <Link
+            href="/owner"
+            className="mt-2 text-sm text-slate-600 hover:text-slate-900 underline underline-offset-2"
+          >
+            ← Back to all restaurants
+          </Link>
+        </div>
+      </div>
+
       <ReservationsSummary
         reservations={reservations}
         totalToday={reservationsToday.length}
@@ -98,21 +106,14 @@ export default function OwnerDashboard() {
         <ReservationsList reservations={reservations} />
       </section>
 
-      <div className="flex gap-4">
-        <a
-          href="/owner/reservations"
-          className="text-sm font-medium underline underline-offset-2"
-        >
-          Manage reservations
-        </a>
-
-        <a
-          href="/owner/settings"
+        <Link
+          href={`/owner/${restaurantId}/settings`}
           className="text-sm font-medium underline underline-offset-2"
         >
           Edit opening hours & capacity
-        </a>
-      </div>
+        </Link>     
+
+
     </div>
   );
 }

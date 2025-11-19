@@ -13,11 +13,13 @@ import { getRestaurant } from "./controllers/get-restaurant";
 import { getRestaurantAvailability } from "./controllers/get-restaurant-availability";
 import { cancelReservationByToken } from "./controllers/cancel-reservation-by-token";
 import { getUserProfile } from "./controllers/get-user-profile";
+import { listOwnerRestaurants } from "./controllers/list-owner-restaurants";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/users", register);
   app.post("/sessions", authenticate);
   app.get("/me", { preHandler: [verifyJWT] }, getUserProfile);
+  app.get("/me/restaurants", { preHandler: [verifyJWT] }, listOwnerRestaurants);
   app.post("/restaurants", { preHandler: [verifyJWT] }, createRestaurant);
   app.get(
     "/restaurants/:restaurantId/reservations",

@@ -24,7 +24,8 @@ export default function LoginForm() {
 
     try {
       await loginWithEmailPassword(email, password);
-      router.push("/owner/restaurant/dashboard");
+      router.push("/owner");
+      router.refresh();
     } catch (err) {
       console.error(err);
       setStatus({

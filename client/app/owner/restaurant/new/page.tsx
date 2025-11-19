@@ -1,4 +1,4 @@
-import CreateRestaurantForm from "./create-restaurant-form";
+import CreateRestaurantForm from "../../components/create-restaurant-form";
 
 export default function NewRestaurantPage() {
   return (
