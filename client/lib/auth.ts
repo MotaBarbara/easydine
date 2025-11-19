@@ -31,3 +31,23 @@ export function getRestaurantIdFromToken(): string | null {
   const payload = parseJwt(token);
   return payload?.restaurantId ?? null;
 }
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3333";
+
+export async function getRestaurantIdFromAPI(): Promise<string | null> {
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`${API_BASE}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.user?.restaurantId ?? null;
+  } catch {
+    return null;
+  }
+}

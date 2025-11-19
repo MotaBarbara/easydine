@@ -1,6 +1,5 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMjQyNTNlNS0xYWE4LTQ2NGItOTdmOS1iZmI2ZTk3YjM4NjIiLCJyZXN0YXVyYW50SWQiOiI2MjQ1NWFiOC0xYzE5LTQ1N2ItYTY1OC0xYTRlODI1MTM0YmQiLCJlbWFpbCI6ImJAZ21haWwuY29tIiwibmFtZSI6IkJtb3RhIiwiaWF0IjoxNzYzNDkyMzY2fQ.NjUemRHZ8aBpZ8rdF9ygSVEfP-tWitPt5hth2-4EMc4
-@restaurantId = 62455ab8-1c19-457b-a658-1a4e825134bd
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YmQ2NmRjZC02NTc4LTRhNTQtYjlkNC1jOGE0Mjg2MjBmN2MiLCJlbWFpbCI6ImJAZ21haWwuY29tIiwibmFtZSI6Ikxtb3RhIiwiaWF0IjoxNzYzNTA0NzY2fQ.K5i2uSheaCOptdo8Kln8Yw_j8Xx5ADdoY_ZftGZgYP0
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 34dd8bca-1d38-41d3-935f-14f7dfd8ac63
 @cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
@@ -10,7 +9,7 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "Bmota",
+  "name": "Lmota",
   "email": "b@gmail.com",
   "password": "123456"
 }
@@ -30,7 +29,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Restaurant da Mota",
+  "name": "Restaurant da ",
   "logo": null,
   "primaryColor": "#C0392B",
   "settings": {
