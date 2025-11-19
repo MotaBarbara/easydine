@@ -65,16 +65,6 @@ export default function OwnerDashboard({ restaurantId }: OwnerDashboardProps) {
     r => getUtcDateString(r.date) === tomorrowStr,
   );
 
-  console.log("All reservations:", reservations);
-  console.log("Today string we are looking for:", todayStr);
-  console.log("Tomorrow string:", tomorrowStr);
-  console.log(
-    "First reservation date →",
-    reservations[0]?.date,
-    "→ becomes",
-    getUtcDateString(reservations[0]?.date),
-  );
-
   const upcomingCount = reservations.length;
 
   return (

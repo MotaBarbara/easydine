@@ -33,6 +33,41 @@ export function isPastDay(date: Date) {
   return inputDay < today;
 }
 
+export function isPastDateTime(date: Date, time: string) {
+  const now = new Date();
+  
+  if (isPastDay(date)) {
+    return true;
+  }
+  
+  const today = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+  );
+  const inputDay = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+  );
+  
+  if (inputDay === today) {
+    const [hoursStr, minutesStr] = time.split(":");
+    const hours = Number(hoursStr);
+    const minutes = minutesStr !== undefined ? Number(minutesStr) : 0;
+    const reservationTime = new Date(date);
+    reservationTime.setUTCHours(
+      Number.isNaN(hours) ? 0 : hours,
+      Number.isNaN(minutes) ? 0 : minutes,
+      0,
+      0
+    );
+
+    return reservationTime < now;
+  }
+  return false;
+}
+
 export function isClosedAt(
   settings: unknown,
   date: Date,
