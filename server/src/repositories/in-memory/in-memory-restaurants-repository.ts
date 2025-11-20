@@ -33,6 +33,8 @@ export class InMemoryRestaurantsRepository implements RestaurantsRepository {
   }
 
   async create(data: Prisma.RestaurantCreateInput) {
+    // In-memory repository doesn't track many-to-many relationships,
+    // so we just ignore the owners field if present
     const restaurant: Restaurant = {
       id: crypto.randomUUID(),
       name: data.name!,

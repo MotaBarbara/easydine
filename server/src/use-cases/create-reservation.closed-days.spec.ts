@@ -39,7 +39,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2099-11-09T18:00:00Z"),
+        date: "2099-11-09T18:00:00Z",
         time: "18:00",
         customerName: "Alice",
         customerEmail: "alice@test.com",
@@ -63,7 +63,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2099-11-09T12:30:00Z"),
+        date: "2099-11-09T12:30:00Z",
         time: "12:30",
         customerName: "Luis",
         customerEmail: "luis@test.com",
@@ -73,7 +73,7 @@ describe("Create Reservation Use Case", () => {
 
     const ok = await sut.execute({
       restaurantId: r.id,
-      date: new Date("2099-11-09T19:00:00Z"),
+      date: "2099-11-09T19:00:00Z",
       time: "19:00",
       customerName: "Antonio",
       customerEmail: "antonio@test.com",
@@ -97,7 +97,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId: r.id,
-        date: new Date("2099-12-25T19:00:00Z"),
+        date: "2099-12-25T19:00:00Z",
         time: "19:00",
         customerName: "A",
         customerEmail: "a@x.com",
@@ -107,7 +107,7 @@ describe("Create Reservation Use Case", () => {
 
     const ok = await sut.execute({
       restaurantId: r.id,
-      date: new Date("2099-12-25T12:30:00Z"),
+      date: "2099-12-25T12:30:00Z",
       time: "12:30",
       customerName: "B",
       customerEmail: "b@x.com",

@@ -24,7 +24,7 @@ export async function createReservation(
 
   const { reservation } = await useCase.execute({
     restaurantId,
-    date
+    date,
     time,
     customerName,
     customerEmail,

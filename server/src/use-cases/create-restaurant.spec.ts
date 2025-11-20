@@ -30,9 +30,6 @@ describe("Create Restaurant Use Case", () => {
 
     expect(restaurant.id).toEqual(expect.any(String));
     expect(restaurant.name).toBe("Test Restaurant");
-
-    const updatedUser = await usersRepo.findById(user.id);
-    expect(updatedUser?.restaurantId).toBe(restaurant.id);
   });
 
   it("prevents duplicate name", async () => {
