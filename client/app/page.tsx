@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { apiFetch } from "@/lib/api";
+import { listRestaurants } from "@/lib/api/restaurants";
 import type { Restaurant } from "@/types/restaurant";
 
 async function getRestaurants() {
-  const data = await apiFetch<{ restaurants: Restaurant[] }>("/restaurants");
+  const data = await listRestaurants();
   return data.restaurants;
 }
 

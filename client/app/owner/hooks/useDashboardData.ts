@@ -1,25 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getToken } from "@/lib/auth";
+import {
+  getRestaurant,
+  getRestaurantReservations,
+  type Restaurant,
+  type Reservation,
+} from "@/lib/api/restaurants";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3333";
-
-export type Restaurant = {
-  id: string;
-  name: string;
-  logo?: string;
-  primaryColor?: string;
-};
-
-export type Reservation = {
-  id: string;
-  slot: string;
-  date: string;
-  customerName: string;
-  groupSize: number;
-};
+export type { Restaurant, Reservation };
 
 export function useDashboardData(restaurantId: string) {
   const [loading, setLoading] = useState(true);
@@ -29,37 +18,20 @@ export function useDashboardData(restaurantId: string) {
 
   useEffect(() => {
     async function load() {
-      const token = getToken();
-      if (!token || !restaurantId) return;
+      if (!restaurantId) return;
 
       try {
         const [restaurantRes, reservationsRes] = await Promise.all([
-          fetch(`${API_BASE}/restaurants/${restaurantId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`${API_BASE}/restaurants/${restaurantId}/reservations`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+          getRestaurant(restaurantId),
+          getRestaurantReservations(restaurantId),
         ]);
 
-        const restaurantData = await restaurantRes.json().catch(() => null);
-        const reservationsData = await reservationsRes.json().catch(() => null);
-
-        if (!restaurantRes.ok)
-          throw new Error(
-            restaurantData?.message ?? "Failed to load restaurant",
-          );
-        if (!reservationsRes.ok)
-          throw new Error(
-            reservationsData?.message ?? "Failed to load reservations",
-          );
-
-        const rawReservations = Array.isArray(reservationsData)
-          ? reservationsData
-          : reservationsData?.reservations ?? [];
+        const rawReservations = Array.isArray(reservationsRes.reservations)
+          ? reservationsRes.reservations
+          : [];
 
         const normalizedReservations: Reservation[] = rawReservations.map(
-          (r: any) => ({
+          (r: { id: string; time?: string; slot?: string; date: string; customerName: string; groupSize: number }) => ({
             id: r.id,
             slot: r.slot || r.time || "",
             date: r.date,
@@ -68,7 +40,7 @@ export function useDashboardData(restaurantId: string) {
           }),
         );
 
-        setRestaurant(restaurantData);
+        setRestaurant(restaurantRes.restaurant);
         setReservations(normalizedReservations);
       } catch (err) {
         console.error(err);

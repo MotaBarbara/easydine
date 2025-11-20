@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { apiFetch } from "../../../lib/api";
+import { getRestaurant } from "@/lib/api/restaurants";
 import type { Restaurant } from "../../../types/restaurant";
 import BookingForm from "./booking-form";
 
@@ -7,11 +7,9 @@ type RestaurantDetail = Restaurant & {
   settings?: unknown;
 };
 
-async function getRestaurant(id: string) {
-  const data = await apiFetch<{ restaurant: RestaurantDetail }>(
-    `/restaurants/${id}`,
-  );
-  return data.restaurant;
+async function fetchRestaurant(id: string) {
+  const data = await getRestaurant(id);
+  return data.restaurant as RestaurantDetail;
 }
 
 type Props = {
@@ -21,7 +19,7 @@ type Props = {
 export default async function RestaurantPage(props: Props) {
   const { id } = await props.params;
 
-  const restaurant = await getRestaurant(id).catch(() => null);
+  const restaurant = await fetchRestaurant(id).catch(() => null);
   if (!restaurant) {
     notFound();
   }

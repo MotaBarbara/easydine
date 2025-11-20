@@ -61,9 +61,9 @@ Authorization: Bearer {{token}}
 
 {
   "restaurantId": "{{restaurantId}}",
-  "date": "2025-11-18T18:00:00.000Z",
-  "time": "21:43",
-  "customerName": "20:36 VICTORY?",
+  "date": "2025-11-20T18:00:00.000Z",
+  "time": "19:43",
+  "customerName": "hi?",
   "customerEmail": "barbarantmotaa@gmail.com",
   "groupSize": 20
   }

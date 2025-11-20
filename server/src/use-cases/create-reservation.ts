@@ -1,12 +1,13 @@
 import type { ReservationsRepository } from "@/repositories/reservations-repository";
 import { ReservationConflictError } from "./errors/reservation-conflict-error";
-import type { Reservation } from "generated/prisma";
+import type { Reservation, Restaurant } from "generated/prisma";
 import type { RestaurantsRepository } from "@/repositories/restaurants-repository";
 import type { RestaurantSettings } from "@/types/restaurant-settings";
 import { isPastDateTime, isClosedAt } from "@/utils/reservation-time";
 import { ReservationPastDate } from "./errors/reservation-past-date-error";
 import { RestaurantClosed } from "./errors/restaurant-closed-error";
 import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
+import type { EmailService } from "@/services/email-service";
 
 interface CreateReservationUseCaseRequest {
   restaurantId: string;
@@ -20,12 +21,14 @@ interface CreateReservationUseCaseRequest {
 
 interface CreateReservationUseCaseResponse {
   reservation: Reservation;
+  restaurant: Restaurant;
 }
 
 export class CreateReservationUseCase {
   constructor(
     private reservationsRepository: ReservationsRepository,
     private restaurantsRepository: RestaurantsRepository,
+    private emailService?: EmailService,
   ) {}
 
   async execute({
@@ -78,6 +81,17 @@ export class CreateReservationUseCase {
       status: status ?? "confirmed",
     });
 
-    return { reservation };
+    if (this.emailService) {
+      this.emailService
+        .sendReservationConfirmation({
+          reservation,
+          restaurant,
+        })
+        .catch(err => {
+          console.error("Failed to send confirmation email:", err);
+        });
+    }
+
+    return { reservation, restaurant };
   }
 }

@@ -1,27 +1,25 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { z } from "zod";
 import { makeListReservationsUseCase } from "@/use-cases/factories/make-list-reservation-use-case";
-
-const querySchema = z.object({
-  date: z.string().date().optional(),
-});
-
-const paramsSchema = z.object({
-  restaurantId: z.string().uuid(),
-});
+import { restaurantIdParamSchema } from "@/http/schemas/common-schemas";
+import { dateQuerySchema } from "@/http/schemas/common-schemas";
+import { handleUseCaseError } from "@/http/middlewares/error-handler";
 
 export async function listReservations(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { restaurantId } = paramsSchema.parse(request.params);
-  const { date } = querySchema.parse(request.query);
+  try {
+    const { restaurantId } = restaurantIdParamSchema.parse(request.params);
+    const { date } = dateQuerySchema.parse(request.query);
 
-  const listReservationsUseCase = makeListReservationsUseCase();
+    const listReservationsUseCase = makeListReservationsUseCase();
 
-  const result = await listReservationsUseCase.execute(
-    date != null ? { restaurantId, date: new Date(date) } : { restaurantId },
-  );
+    const result = await listReservationsUseCase.execute(
+      date != null ? { restaurantId, date: new Date(date) } : { restaurantId },
+    );
 
-  return reply.status(200).send(result);
+    return reply.status(200).send(result);
+  } catch (error) {
+    return handleUseCaseError(error, reply);
+  }
 }
