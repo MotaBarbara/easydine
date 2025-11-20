@@ -33,7 +33,7 @@ describe("Create Reservation Use Case", () => {
   it("creates a reservation", async () => {
     const { reservation } = await sut.execute({
       restaurantId,
-      date: new Date("2099-11-10T18:00:00Z"),
+      date: "2099-11-10T18:00:00Z",
       time: "18:00",
       customerName: "Jane Doe",
       customerEmail: "jane@example.com",
@@ -46,7 +46,7 @@ describe("Create Reservation Use Case", () => {
   it("prevents overbooking", async () => {
     await sut.execute({
       restaurantId,
-      date: new Date("2099-11-10T18:00:00Z"),
+      date: "2099-11-10T18:00:00Z",
       time: "18:00",
       customerName: "John",
       customerEmail: "john@example.com",
@@ -56,7 +56,7 @@ describe("Create Reservation Use Case", () => {
     await expect(() =>
       sut.execute({
         restaurantId,
-        date: new Date("2099-11-10T18:00:00Z"),
+        date: "2099-11-10T18:00:00Z",
         time: "18:00",
         customerName: "Alice",
         customerEmail: "alice@example.com",

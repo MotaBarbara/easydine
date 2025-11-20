@@ -38,18 +38,10 @@ export class CreateRestaurantUseCase {
       logo: logo ?? null,
       primaryColor: primaryColor ?? null,
       settings: settings === null ? Prisma.JsonNull : settings,
-    });
-
-    const { prisma } = await import("@/lib/prisma");
-    await prisma.restaurant.update({
-      where: { id: restaurant.id },
-      data: {
-        owners: {
-          connect: { id: ownerId },
-        },
+      owners: {
+        connect: { id: ownerId },
       },
     });
-
 
     return { restaurant };
   }
