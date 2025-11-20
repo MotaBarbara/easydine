@@ -4,7 +4,6 @@ import jwtPlugin from "@/http/plugins/jwt";
 import { verifyJWT } from "./verify-jwt";
 import { ensureOwner } from "./ensure-owner";
 
-// Mock Prisma
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     restaurant: {
@@ -56,7 +55,6 @@ describe("Ownership & Auth Guards", () => {
       name: "Owner",
     });
 
-    // Mock restaurant with different owner
     mockPrisma.restaurant.findUnique.mockResolvedValue({
       id: restaurantId,
       owners: [{ id: "different-user-id" }],
@@ -81,7 +79,6 @@ describe("Ownership & Auth Guards", () => {
       name: "Owner",
     });
 
-    // Mock restaurant not found
     mockPrisma.restaurant.findUnique.mockResolvedValue(null);
 
     const response = await app.inject({
@@ -103,7 +100,6 @@ describe("Ownership & Auth Guards", () => {
       name: "Owner",
     });
 
-    // Mock restaurant with matching owner
     mockPrisma.restaurant.findUnique.mockResolvedValue({
       id: restaurantId,
       owners: [{ id: userId }],

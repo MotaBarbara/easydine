@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
+import { handleUseCaseError } from "@/http/middlewares/error-handler";
 
 export async function listOwnerRestaurants(
   request: FastifyRequest,
@@ -13,7 +13,7 @@ export async function listOwnerRestaurants(
 
   try {
     const { prisma } = await import("@/lib/prisma");
-    
+
     const restaurantsData = await prisma.restaurant.findMany({
       where: {
         owners: {
@@ -35,10 +35,7 @@ export async function listOwnerRestaurants(
 
     return reply.status(200).send({ restaurants });
   } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return reply.status(404).send({ message: "User not found" });
-    }
-    throw error;
+    return handleUseCaseError(error, reply);
   }
 }
 

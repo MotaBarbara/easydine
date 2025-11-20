@@ -1,62 +1,36 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import z from "zod";
 import { makeUpdateRestaurantUseCase } from "@/use-cases/factories/make-update-restaurant-use-case";
-import {
-  restaurantSettingsSchema,
-  type RestaurantSettings,
-} from "@/types/restaurant-settings";
+import { restaurantIdParamSchema } from "@/http/schemas/common-schemas";
+import { updateRestaurantBodySchema } from "@/http/schemas/restaurant-schemas";
+import { handleUseCaseError } from "@/http/middlewares/error-handler";
 
-const paramsSchema = z.object({
-  restaurantId: z.string().uuid(),
-});
-
-const bodySchema = z.object({
-  name: z.string().min(1).optional().nullable(),
-  logo: z.string().url().optional().nullable().or(z.literal(null)),
-  primaryColor: z
-    .string()
-    .regex(/^#([0-9a-fA-F]{6})$/, "hex color like #RRGGBB")
-    .optional()
-    .nullable(),
-  settings: restaurantSettingsSchema.optional().nullable(),
-});
+function removeUndefined<T extends Record<string, unknown>>(
+  obj: T,
+): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined),
+  ) as Partial<T>;
+}
 
 export async function updateRestaurant(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { restaurantId } = paramsSchema.parse(request.params);
-  const body = bodySchema.parse(request.body);
+  try {
+    const { restaurantId } = restaurantIdParamSchema.parse(request.params);
+    const body = updateRestaurantBodySchema.parse(request.body);
 
-  const useCase = makeUpdateRestaurantUseCase();
+    const useCase = makeUpdateRestaurantUseCase();
 
-  const requestData: {
-    restaurantId: string;
-    name?: string;
-    logo?: string | null;
-    primaryColor?: string | null;
-    settings?: RestaurantSettings | null;
-  } = {
-    restaurantId,
-  };
+    const requestData = {
+      restaurantId,
+      ...removeUndefined(body),
+    };
 
-  if (body.name !== null && body.name !== undefined) {
-    requestData.name = body.name;
+    const { restaurant } = await useCase.execute(requestData);
+
+    return reply.status(200).send({ restaurant });
+  } catch (error) {
+    return handleUseCaseError(error, reply);
   }
-
-  if (body.logo !== undefined) {
-    requestData.logo = body.logo;
-  }
-
-  if (body.primaryColor !== undefined) {
-    requestData.primaryColor = body.primaryColor;
-  }
-
-  if (body.settings !== undefined) {
-    requestData.settings = body.settings;
-  }
-
-  const { restaurant } = await useCase.execute(requestData);
-
-  return reply.status(200).send({ restaurant });
 }
