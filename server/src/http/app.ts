@@ -7,7 +7,7 @@ import cors from "@fastify/cors";
 
 export const app = fastify();
 app.register(cors, {
-  origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
+  origin: process.env.FRONTEND_ORIGIN ?? "https://easydine-client.onrender.com",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 });
 app.register(jwtPlugin);
