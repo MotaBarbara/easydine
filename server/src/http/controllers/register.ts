@@ -1,6 +1,6 @@
 import { makeRegisterUseCase } from "@/use-cases/factories/make-register-use-case";
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { registerBodySchema } from "@/http/schemas/reservation-schemas";
+import { registerBodySchema } from "@/http/schemas/common-schemas";
 import { handleUseCaseError } from "@/http/middlewares/error-handler";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {

@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { makeAuthenticateUseCase } from "@/use-cases/factories/make-authenticate-use-case";
-import { authenticateBodySchema } from "@/http/schemas/reservation-schemas";
+import { authenticateBodySchema } from "@/http/schemas/common-schemas";
 import { handleUseCaseError } from "@/http/middlewares/error-handler";
 
 export async function authenticate(

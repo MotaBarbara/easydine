@@ -56,8 +56,8 @@ export class ApiClient {
 
   async request<T>(path: string, options?: RequestInit): Promise<T> {
     const token = getToken();
-    const headers: HeadersInit = {
-      ...options?.headers,
+    const headers: Record<string, string> = {
+      ...(options?.headers as Record<string, string> | undefined),
     };
 
     if (token) {
@@ -71,10 +71,18 @@ export class ApiClient {
     });
 
     if (!res.ok) {
-      const error = await res.json().catch(() => ({
-        message: res.statusText,
-      }));
-      throw new Error(error.message ?? `API request failed: ${res.status}`);
+      let errorMessage = res.statusText || `API request failed: ${res.status}`;
+      
+      try {
+        const errorBody = await res.json();
+        if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
+          errorMessage = errorBody.message as string;
+        }
+      } catch {
+        errorMessage = res.statusText || `API request failed: ${res.status}`;
+      }
+      
+      throw new Error(errorMessage);
     }
 
     return res.json() as Promise<T>;
