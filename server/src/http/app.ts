@@ -6,9 +6,15 @@ import jwtPlugin from "@/http/plugins/jwt";
 import cors from "@fastify/cors";
 
 export const app = fastify();
+
+// CORS configuration - allow frontend origin
+const frontendOrigin = process.env.FRONTEND_ORIGIN ?? "https://easydine-client.onrender.com";
+console.log("🌐 CORS configured for origin:", frontendOrigin);
+
 app.register(cors, {
-  origin: process.env.FRONTEND_ORIGIN ?? "https://easydine-client.onrender.com",
+  origin: frontendOrigin,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  credentials: true,
 });
 app.register(jwtPlugin);
 app.register(appRoutes);
