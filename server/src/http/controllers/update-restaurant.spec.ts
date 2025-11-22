@@ -3,7 +3,6 @@ import type { FastifyRequest, FastifyReply } from "fastify";
 import { updateRestaurant } from "./update-restaurant";
 import { RestaurantNotFound } from "@/use-cases/errors/restaurant-not-found-error";
 
-// Mock the use case factory
 vi.mock("@/use-cases/factories/make-update-restaurant-use-case", () => ({
   makeUpdateRestaurantUseCase: vi.fn(),
 }));

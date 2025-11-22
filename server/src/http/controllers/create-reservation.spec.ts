@@ -5,7 +5,6 @@ import { RestaurantNotFound } from "@/use-cases/errors/restaurant-not-found-erro
 import { ReservationConflictError } from "@/use-cases/errors/reservation-conflict-error";
 import { ReservationPastDate } from "@/use-cases/errors/reservation-past-date-error";
 
-// Mock the use case factory
 vi.mock("@/use-cases/factories/make-create-reservation-use-case", () => ({
   makeCreateReservationUseCase: vi.fn(),
 }));

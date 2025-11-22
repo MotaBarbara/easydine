@@ -24,7 +24,7 @@ describe("reservation-time", () => {
 
   describe("weekday", () => {
     it("should return the weekday", () => {
-      const date = new Date("2025-01-15T10:30:00Z"); // Wednesday
+      const date = new Date("2025-01-15T10:30:00Z");
       expect(weekday(date)).toBe(3);
     });
   });
@@ -125,7 +125,7 @@ describe("reservation-time", () => {
         { date: "2025-12-25", from: "18:00", to: "23:59" },
       ],
       closedWeekly: [
-        { weekday: 1, from: "12:00", to: "15:00" }, // Monday lunch
+        { weekday: 1, from: "12:00", to: "15:00" },
       ],
     };
 
@@ -150,17 +150,17 @@ describe("reservation-time", () => {
     });
 
     it("should return true for closed weekly day with time in range", () => {
-      const date = new Date("2025-01-13T10:00:00Z"); // Monday
+      const date = new Date("2025-01-13T10:00:00Z");
       expect(isClosedAt(settings, date, "13:00")).toBe(true);
     });
 
     it("should return false for closed weekly day with time outside range", () => {
-      const date = new Date("2025-01-13T10:00:00Z"); // Monday
+      const date = new Date("2025-01-13T10:00:00Z");
       expect(isClosedAt(settings, date, "16:00")).toBe(false);
     });
 
     it("should return false for open day and time", () => {
-      const date = new Date("2025-01-15T10:00:00Z"); // Wednesday
+      const date = new Date("2025-01-15T10:00:00Z");
       expect(isClosedAt(settings, date, "12:00")).toBe(false);
     });
 
@@ -180,7 +180,7 @@ describe("reservation-time", () => {
         closedDates: [],
         closedWeekly: [{ weekday: 1 }],
       };
-      const date = new Date("2025-01-13T10:00:00Z"); // Monday
+      const date = new Date("2025-01-13T10:00:00Z");
       expect(isClosedAt(settingsWithoutTime, date, "12:00")).toBe(true);
     });
   });
