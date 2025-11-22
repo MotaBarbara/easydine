@@ -51,5 +51,6 @@ export interface Reservation {
   date: string;
   customerName: string;
   groupSize: number;
+  status?: string;
 }
 

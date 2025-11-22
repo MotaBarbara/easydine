@@ -31,12 +31,13 @@ export function useDashboardData(restaurantId: string) {
           : [];
 
         const normalizedReservations: Reservation[] = rawReservations.map(
-          (r: { id: string; time?: string; slot?: string; date: string; customerName: string; groupSize: number }) => ({
+          (r: { id: string; time?: string; slot?: string; date: string; customerName: string; groupSize: number; status?: string }) => ({
             id: r.id,
             slot: r.slot || r.time || "",
             date: r.date,
             customerName: r.customerName,
             groupSize: r.groupSize,
+            status: r.status || "confirmed",
           }),
         );
 
