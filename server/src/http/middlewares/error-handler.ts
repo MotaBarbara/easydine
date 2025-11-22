@@ -63,7 +63,6 @@ export function handleUseCaseError(error: unknown, reply: FastifyReply) {
     });
   }
 
-  // Log unknown errors for debugging
   console.error("Unhandled error in use case:", error);
   
   throw error;
