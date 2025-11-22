@@ -35,20 +35,27 @@ export interface SendMailParams {
 
 export async function sendMail({ to, subject, html }: SendMailParams) {
   if (!isSmtpConfigured() || !transporter) {
-    console.log("\n📧 [EMAIL] (SMTP not configured - email logged instead)");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log(`To: ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log(html.replace(/<[^>]*>/g, ""));
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    console.warn("\n⚠️  [EMAIL] SMTP not configured - email logged instead");
+    console.warn("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.warn(`To: ${to}`);
+    console.warn(`Subject: ${subject}`);
+    console.warn("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.warn(html.replace(/<[^>]*>/g, ""));
+    console.warn("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.warn("To enable email sending, configure SMTP_HOST, SMTP_USER, and SMTP_PASS environment variables\n");
     return;
   }
 
-  await transporter.sendMail({
-    from: process.env.MAIL_FROM ?? '"EasyDine" <no-reply@easydine.app>',
-    to,
-    subject,
-    html,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.MAIL_FROM ?? '"EasyDine" <no-reply@easydine.app>',
+      to,
+      subject,
+      html,
+    });
+    console.log(`✅ [EMAIL] Confirmation email sent to ${to}`);
+  } catch (error) {
+    console.error("❌ [EMAIL] Failed to send email:", error);
+    throw error;
+  }
 }
