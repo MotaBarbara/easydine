@@ -1,6 +1,5 @@
 "use client";
-
-import type { Reservation } from "../../hooks/useDashboardData";
+import type { Reservation } from "@/lib/api/restaurants";
 
 type Props = {
   reservations: Reservation[];
