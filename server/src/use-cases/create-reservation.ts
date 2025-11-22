@@ -7,6 +7,7 @@ import { isPastDateTime, isClosedAt } from "@/utils/reservation-time";
 import { ReservationPastDate } from "./errors/reservation-past-date-error";
 import { RestaurantClosed } from "./errors/restaurant-closed-error";
 import { RestaurantNotFound } from "./errors/restaurant-not-found-error";
+import { InvalidReservationTimeError } from "./errors/invalid-reservation-time-error";
 import type { EmailService } from "@/services/email-service";
 
 interface CreateReservationUseCaseRequest {
@@ -56,7 +57,11 @@ export class CreateReservationUseCase {
     if (isClosedAt(settings, date, time)) throw new RestaurantClosed();
 
     const slots = settings.slots ?? [];
+    
     const currentSlot = slots.find(s => time >= s.from && time < s.to);
+    if (slots.length > 0 && !currentSlot) {
+      throw new InvalidReservationTimeError();
+    }
 
     const maxReservations = currentSlot?.maxReservations ?? 9000;
 

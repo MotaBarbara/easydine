@@ -10,6 +10,7 @@ import { RestaurantClosed } from "@/use-cases/errors/restaurant-closed-error";
 import { ReservationNotFoundError } from "@/use-cases/errors/reservation-not-found-error";
 import { ReservationAlreadyCancelledError } from "@/use-cases/errors/reservation-already-cancelled-error";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
+import { InvalidReservationTimeError } from "@/use-cases/errors/invalid-reservation-time-error";
 
 export function handleUseCaseError(error: unknown, reply: FastifyReply) {
   if (error instanceof InvalidCredentialsError) {
@@ -37,6 +38,10 @@ export function handleUseCaseError(error: unknown, reply: FastifyReply) {
   }
 
   if (error instanceof RestaurantClosed) {
+    return reply.status(400).send({ message: error.message });
+  }
+
+  if (error instanceof InvalidReservationTimeError) {
     return reply.status(400).send({ message: error.message });
   }
 

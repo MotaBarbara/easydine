@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRjMTkyOC04NjEzLTQ4YTgtOTUwMi0zNzkwM2M1ZDAyYzQiLCJlbWFpbCI6IjJAZ21haWwuY29tIiwibmFtZSI6IjIiLCJpYXQiOjE3NjM1ODExMTB9._v9od3720_YASFtwEsg3hsWCzDMsHF_dGsW_8W2cFqE
-@restaurantId = ba7a030a-d565-415a-888c-23ab47384828
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjMTczMmY0NS1kODNjLTRkYzctOGUyMy03NTczYTQ5N2MyMmUiLCJlbWFpbCI6IjVAZ21haWwuY29tIiwibmFtZSI6IjUiLCJpYXQiOjE3NjM4MTI4Mzl9.jMdM92DbT4ILPUf1vAfCdvbX7XJlybZtflVGpX8MCho
+@restaurantId = 32a22c2d-32d8-4f52-96cb-85d4f38362d0
 @otherRestaurantId = 240a299b-0757-4609-83e0-ca1ca3b9cbac
 @reservationId = 34dd8bca-1d38-41d3-935f-14f7dfd8ac63
 @cancelToken = e5c60b86-8067-4ea1-a2aa-c8388e16f83a
@@ -20,7 +20,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "2@gmail.com",
+  "email": "5@gmail.com",
   "password": "123456"
 }
 
@@ -61,11 +61,11 @@ Authorization: Bearer {{token}}
 
 {
   "restaurantId": "{{restaurantId}}",
-  "date": "2025-11-21T18:00:00.000Z",
-  "time": "19:00",
-  "customerName": "test",
+  "date": "2025-11-23T18:00:00.000Z",
+  "time": "20:00",
+  "customerName": "novo",
   "customerEmail": "barbarantmotaa@gmail.com",
-  "groupSize": 20
+  "groupSize": 2
   }
 
 
