@@ -2,15 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginWithEmailPassword } from "../../lib/auth-api";
+import { loginWithEmailPassword, registerUser } from "@/lib/api/auth";
 
 type Status =
   | { state: "idle" }
   | { state: "submitting" }
   | { state: "error"; message: string };
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3333";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -27,22 +24,8 @@ export default function RegisterForm() {
     setStatus({ state: "submitting" });
 
     try {
-      const res = await fetch(`${API_BASE}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-
-      const body = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        throw new Error(body?.message ?? "Failed to register");
-      }
-
+      await registerUser({ name, email, password });
+      
       await loginWithEmailPassword(email, password);
 
       router.push("/owner");

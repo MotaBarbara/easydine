@@ -7,12 +7,30 @@ import cors from "@fastify/cors";
 
 export const app = fastify();
 
-// CORS configuration - allow frontend origin
-const frontendOrigin = process.env.FRONTEND_ORIGIN ?? "https://easydine-client.onrender.com";
-console.log("🌐 CORS configured for origin:", frontendOrigin);
+const isDevelopment = process.env.NODE_ENV !== "production";
+const frontendOrigin = process.env.FRONTEND_ORIGIN ?? 
+  (isDevelopment ? "http://localhost:3000" : "https://easydine-client.onrender.com");
+
+const allowedOrigins = isDevelopment
+  ? ["http://localhost:3000", "http://127.0.0.1:3000"]
+  : [frontendOrigin];
 
 app.register(cors, {
-  origin: frontendOrigin,
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    if (isDevelopment && origin.includes("localhost")) {
+      return callback(null, true);
+    }
+    
+    callback(new Error("Not allowed by CORS"), false);
+  },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true,
 });

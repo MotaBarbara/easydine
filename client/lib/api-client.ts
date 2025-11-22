@@ -64,28 +64,65 @@ export class ApiClient {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const res = await fetch(`${this.baseUrl}${path}`, {
-      ...options,
-      headers,
-      cache: "no-store",
-    });
+    const url = `${this.baseUrl}${path}`;
 
-    if (!res.ok) {
-      let errorMessage = res.statusText || `API request failed: ${res.status}`;
-      
-      try {
-        const errorBody = await res.json();
-        if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
-          errorMessage = errorBody.message as string;
+    try {
+      const res = await fetch(url, {
+        ...options,
+        headers,
+        cache: "no-store",
+      });
+
+      const contentType = res.headers.get("content-type");
+      const text = await res.text();
+
+      if (!res.ok) {
+        let errorMessage = res.statusText || `API request failed: ${res.status}`;
+        
+        try {
+          if (text && contentType?.includes("application/json")) {
+            const errorBody = JSON.parse(text);
+            if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
+              errorMessage = errorBody.message as string;
+            }
+          }
+        } catch {
+          errorMessage = text || errorMessage;
         }
-      } catch {
-        errorMessage = res.statusText || `API request failed: ${res.status}`;
+        
+        throw new Error(errorMessage);
+      }
+      if (!text) {
+        return {} as T;
       }
       
-      throw new Error(errorMessage);
+      if (!contentType?.includes("application/json")) {
+        return text as T;
+      }
+      
+      try {
+        return JSON.parse(text) as T;
+      } catch (parseError) {
+        console.error("Failed to parse JSON response:", {
+          url,
+          text: text.substring(0, 100),
+          error: parseError,
+        });
+        throw new Error("Invalid JSON response from server");
+      }
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.error('Network error:', {
+          url,
+          baseUrl: this.baseUrl,
+          error: error.message,
+        });
+        throw new Error(
+          `Failed to connect to API. Please check if the backend is running at ${this.baseUrl}`
+        );
+      }
+      throw error;
     }
-
-    return res.json() as Promise<T>;
   }
 }
 
