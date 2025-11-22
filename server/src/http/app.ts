@@ -15,6 +15,13 @@ const allowedOrigins = isDevelopment
   ? ["http://localhost:3000", "http://127.0.0.1:3000"]
   : [frontendOrigin];
 
+console.log("🌐 CORS Configuration:", {
+  isDevelopment,
+  frontendOrigin,
+  allowedOrigins,
+  NODE_ENV: process.env.NODE_ENV,
+});
+
 app.register(cors, {
   origin: (origin, callback) => {
     if (!origin) {
@@ -29,10 +36,12 @@ app.register(cors, {
       return callback(null, true);
     }
     
-    callback(new Error("Not allowed by CORS"), false);
+    console.warn("🚫 CORS rejected origin:", origin, "Allowed:", allowedOrigins);
+    callback(new Error(`Not allowed by CORS: ${origin}`), false);
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true,
+  preflight: true,
 });
 app.register(jwtPlugin);
 app.register(appRoutes);
