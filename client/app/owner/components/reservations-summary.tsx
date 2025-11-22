@@ -1,6 +1,6 @@
 "use client";
 
-import type { Reservation } from "../../hooks/useDashboardData";
+import type { Reservation } from "../hooks/useDashboardData";
 
 type Props = {
   reservations: Reservation[];
