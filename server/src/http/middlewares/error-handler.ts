@@ -11,10 +11,6 @@ import { ReservationNotFoundError } from "@/use-cases/errors/reservation-not-fou
 import { ReservationAlreadyCancelledError } from "@/use-cases/errors/reservation-already-cancelled-error";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 
-/**
- * Centralized error handler for use case errors
- * Maps domain errors to appropriate HTTP status codes and messages
- */
 export function handleUseCaseError(error: unknown, reply: FastifyReply) {
   if (error instanceof InvalidCredentialsError) {
     return reply.status(401).send({ message: "Incorrect email or password." });
