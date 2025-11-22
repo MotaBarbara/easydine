@@ -1,17 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { EmailService } from "./email-service";
-import * as mailModule from "@/lib/mail";
+import * as mailerModule from "@/lib/mailer";
 import type { Reservation, Restaurant } from "generated/prisma";
 
-vi.mock("@/lib/mail", () => ({
-  mail: {
-    sendMail: vi.fn(),
-  },
+vi.mock("@/lib/mailer", () => ({
+  sendMail: vi.fn(),
 }));
 
 describe("EmailService", () => {
   let emailService: EmailService;
-  const mockSendMail = vi.mocked(mailModule.mail.sendMail);
+  const mockSendMail = vi.mocked(mailerModule.sendMail);
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -53,7 +51,6 @@ describe("EmailService", () => {
     });
 
     expect(mockSendMail).toHaveBeenCalledWith({
-      from: '"Test" <test@example.com>',
       to: "john@example.com",
       subject: "Your reservation at Test Restaurant is confirmed",
       html: expect.stringContaining("John Doe"),
@@ -84,7 +81,7 @@ describe("EmailService", () => {
     );
   });
 
-  it("uses default MAIL_FROM when not set", async () => {
+  it("sends email with correct parameters", async () => {
     delete process.env.MAIL_FROM;
     mockSendMail.mockResolvedValue(undefined);
 
@@ -95,7 +92,8 @@ describe("EmailService", () => {
 
     expect(mockSendMail).toHaveBeenCalledWith(
       expect.objectContaining({
-        from: '"EasyDine" <no-reply@easydine.test>',
+        to: "john@example.com",
+        subject: "Your reservation at Test Restaurant is confirmed",
       }),
     );
   });

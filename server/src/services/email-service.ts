@@ -1,6 +1,6 @@
 import type { Reservation } from "generated/prisma";
 import type { Restaurant } from "generated/prisma";
-import { mail } from "@/lib/mail";
+import { sendMail } from "@/lib/mailer";
 
 export interface SendReservationConfirmationParams {
   reservation: Reservation;
@@ -21,8 +21,7 @@ export class EmailService {
       cancelUrl,
     });
 
-    await mail.sendMail({
-      from: process.env.MAIL_FROM ?? '"EasyDine" <no-reply@easydine.test>',
+    await sendMail({
       to: reservation.customerEmail,
       subject: `Your reservation at ${restaurant.name} is confirmed`,
       html,
